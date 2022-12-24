@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 62.5%;
+}
+.header {
+  height: 60px;
+  background-color: #333;
+}
+.header a {
+  text-decoration: none;
+  font-size: 2rem;
+  line-height: 60px;
+  padding: 5px 15px;
+  color: #fff;
+}
+.header a:hover {
+  color: #000;
+}
+li {
+  list-style: none;
+  font-size: 1.6rem;
+}
+li a {
+  text-decoration: none;
+}
