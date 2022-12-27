@@ -2,6 +2,7 @@ const express = require("express");
 const route = require("./routes");
 const app = express();
 const handlebars = require("express-handlebars");
+var methodOverride = require("method-override");
 const path = require("path");
 const port = 3000;
 
@@ -13,8 +14,17 @@ const hbs = handlebars.create({
 });
 
 const viewsPath = path.join(__dirname, "/resources/views");
+
+//static file
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// for put, delete method
+app.use(methodOverride("_method"));
+
+//express handlebars
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", viewsPath);
