@@ -1,14 +1,14 @@
-// const Connection = require("mysql2/typings/mysql/lib/Connection");
-const newsRouter = require("./news");
-const siteRouter = require("./site");
+const paginationMiddleware = require("../middleWares/paginationMiddleware");
+// const loginRouter = require("./login");
 const productsRouter = require("./products");
+const loginController = require("../controllers/LoginController");
 
 const route = function (app) {
-  app.use("/news", newsRouter);
+   app.post("/login", loginController.handleLogin);
 
-  app.use("/products", productsRouter);
+   app.post("/register", loginController.handleRegister);
 
-  app.get("/", siteRouter);
+   app.use("/products", paginationMiddleware, productsRouter);
 };
 
 module.exports = route;
