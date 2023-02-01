@@ -6,7 +6,8 @@ class ProductsController {
       // res.json(req._page);
       // return;
 
-      const { curPage, pageSize } = req._page;
+      const curPage = req._page ? req._page.curPage : 1;
+      const pageSize = req._page ? req._page.curPage : 3;
 
       // thực hiện tiềm kiếm
       db.Product.findAndCountAll({
@@ -26,15 +27,6 @@ class ProductsController {
             console.log(err);
             res.status(500).json("loi server");
          });
-
-      // try {
-      //    const process = db.User.findAll();
-      //    const products = await process;
-      //    res.json(products);
-      // } catch (error) {
-      //    console.log(error);
-      //    res.status(500).json("loi server");
-      // }
    }
    show(req, res) {
       res.json("show");

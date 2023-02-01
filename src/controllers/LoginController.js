@@ -1,15 +1,25 @@
-const bcrypt = require("bcrypt");
 const db = require("../models");
-const user = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 // models
 const User = require("../models/user");
 
 class NewsController {
    async handleLogin(req, res) {
       const { username, password } = req.body;
+
+      // check payload
+      if (!username || !password) {
+         res.json("missing payload");
+         return;
+      }
       // service
       try {
-         const user = await db.User.findOne({ where: { username: username } });
+         const user = await db.User.findOne({
+            where: { username: username },
+            raw: true,
+            atrtibutes: { exclude: ["password"] },
+         });
 
          if (user) {
             const isCorrectPassword = await bcrypt.compare(
@@ -17,8 +27,14 @@ class NewsController {
                user.password
             );
             if (isCorrectPassword) {
-               // handle login
-               res.json("dang nhap thanh cong");
+               const { id, username, role_code } = user;
+               const token = jwt.sign(
+                  { id, username, role_code },
+                  "nguyenhuudat",
+                  { expiresIn: "1d" }
+               );
+               res.json({ token: `bearer ${token}` });
+               return;
             } else {
                res.json("tai khoan hoac mat khau khong dung");
             }
@@ -59,7 +75,7 @@ class NewsController {
             const process = await db.User.create({
                password: hashPassword,
                username: username,
-               ...otherInfo.parse(),
+               ...otherInfo,
             });
             if (process) {
                res.json("dang ky thanh cong");
