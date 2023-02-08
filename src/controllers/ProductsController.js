@@ -28,6 +28,31 @@ class ProductsController {
             res.status(500).json("loi server");
          });
    }
+   async getOne(req, res) {
+      const { key } = req.params;
+      try {
+         const product = await db.Product.findOne({
+            where: { href: key },
+            attributes: {
+               exclude: ["createdAt", "updatedAt"],
+            },
+            include: [
+               {
+                  model: db.Detail,
+                  as: "data",
+                  attributes: {
+                     exclude: ["createdAt", "updatedAt", "id"],
+                  },
+               },
+            ],
+         });
+         if (product) res.json(product);
+         else res.json("product not found");
+      } catch (error) {
+         console.log(error);
+         res.json("loi server");
+      }
+   }
    show(req, res) {
       res.json("show");
    }

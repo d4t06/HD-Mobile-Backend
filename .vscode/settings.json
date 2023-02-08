@@ -4,5 +4,5 @@
    "editor.defaultFormatter": "esbenp.prettier-vscode",
    "editor.fontSize": 17,
    "prettier.printWidth": 80,
-   "window.zoomLevel": -1.3
+   "window.zoomLevel": -1.2
 }
