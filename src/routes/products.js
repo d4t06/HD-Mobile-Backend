@@ -1,9 +1,20 @@
+const {application} = require("express");
 const express = require("express");
-const productsController = require("../controllers/ProductsController");
 const route = express.Router();
+// controller
+const productsController = require("../controllers/ProductsController");
+// middle
+const paginationMiddleware = require("../middleWares/paginationMiddleware");
 
-route.get("/products/:key", productsController.getOne);
-route.get("/products", productsController.index);
-route.get("/", productsController.index);
+route.get("/", paginationMiddleware, productsController.index);
+
+route.get("/:category/:key", productsController.getProducts);
+
+// route.get("/laptop/:key", productsController.getByKey);
+
+
+route.get("/", (res, req) => {
+   req.json("products");
+});
 
 module.exports = route;

@@ -1,19 +1,22 @@
-GET http://localhost:3000/product-management/products/samsung-galaxy-s23-ultraHTTP/1.1
+###
+GET http://localhost:3000/products/laptop
 
 ###
-GET http://localhost:3000/product-management/products HTTP/1.1
+GET http://localhost:3000/products/dtdd
 
+###
+GET http://localhost:3000/user
 
 ###
 content-Type: application/json
-GET http://localhost:3000/product-management/products HTTP/1.1
+GET http://localhost:3000/products HTTP/1.1
 {
     "username": "datnh",
     "password": "123123",
     "display_name":"datnh",
+    
     "avatar":"avatar"
 }
-
 
 ###
 GET http://localhost:3000/insert HTTP/1.1
@@ -21,8 +24,6 @@ GET http://localhost:3000/insert HTTP/1.1
 ###
 GET http://localhost:3000/user-management/user HTTP/1.1
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJkYXRuaCIsInJvbGVfY29kZSI6IlIxIiwiaWF0IjoxNjc1MjQyMTY0LCJleHAiOjE2NzUzMjg1NjR9.ANxm6q6dIFo-hUHymIiZve2EmlqmHU5jLQ5mxlTlXTg
-
-
 ###
 POST http://localhost:3000/register HTTP/1.1
 content-Type: application/json

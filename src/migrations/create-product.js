@@ -12,11 +12,17 @@ module.exports = {
          href: {
             type: Sequelize.STRING,
          },
+         brand: {
+            type: Sequelize.STRING,
+         },
          name: {
             type: Sequelize.STRING,
          },
          category: {
             type: Sequelize.STRING,
+         },
+         quantity: {
+            type: Sequelize.INTEGER,
          },
          image: {
             type: Sequelize.STRING,

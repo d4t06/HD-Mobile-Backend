@@ -1,10 +1,11 @@
 const db = require("../models");
-const data = require("../../data.json");
+const data = require("../../product_demand.json");
 
 class InsertController {
    async index(req, res, next) {
       try {
-         await db.Product.bulkCreate(data);
+         // res.json(data)
+         await db.Product_demand.bulkCreate(data);
          res.json("insert successfully");
       } catch (error) {
          res.json("co loi");

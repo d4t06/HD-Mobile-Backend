@@ -1,50 +1,94 @@
 // const pool = require("../../config/db");
 const db = require("../models/index");
+const testdata = require ('../../testdata.js')
 
 class ProductsController {
    index(req, res) {
-      // res.json(req._page);
-      // return;
-
-      const curPage = req._page ? req._page.curPage : 1;
-      const pageSize = req._page ? req._page.curPage : 3;
+      // const query = req.query;
+      const {page, ...query} = req.query
+      console.log(query, page)
+      // return res.json(testdata)
+      // const curPage = req._page ? req._page.curPage : 1;
+      const pageSize = req._page ? req._page.pageSize : 5;
 
       // thực hiện tiềm kiếm
       db.Product.findAndCountAll({
-         offset: (curPage - 1) * pageSize,
-         limit: pageSize,
-      })
+            offset: 0,
+            limit: 6 * (+page),
+            where: {
+               ...query
+            },
+            raw: true,
+         })
          .then((data) => {
             return res.json(data);
-            const { count, rows } = data;
-
-            const products = [];
-            rows.map((item) => products.push(item.dataValues));
-
-            res.render("products", { products: products, count });
          })
          .catch((err) => {
             console.log(err);
             res.status(500).json("loi server");
          });
    }
-   async getOne(req, res) {
-      const { key } = req.params;
-      try {
-         const product = await db.Product.findOne({
-            where: { href: key },
+   async getProducts(req, res) {
+      const params = req.params;
+      // const searchKey = key.split("-").length > 1 ? 'href' : "brand";
+      // const categories = {
+      //    dtdd: "mobile",
+      //    laptop: "laptop"
+      // }
+
+      console.log(params)
+      return res.status(200).json({rows: {"href": "samsung-galaxy-s23-ultra",
+      "brand": "Samsung",
+      "name": "Samsung Galaxy S23 Ultra 5G",
+      "category": "mobile",
+      "quantity": 10,
+      "image": "https://cdn.tgdd.vn/Products/Images/42/249948/samsung-galaxy-s23-ultra-1-600x600.jpg",
+      "feature": "6.8\"&Quad HD+ (2K+)&",
+      "old_price": null,
+      "cur_price": "31990000",
+      "product_label": "https://cdn.tgdd.vn/ValueIcons/label-moi-ra-mat-fnal.png",
+      "intallment": false,
+      "label": false,
+      "gift": "Giảm 5 triệu, Trả góp 0%, Thu cũ tài trợ 3 triệu, Ốp lưng BTS",
+      "pre_order": "Đặt trước đến 17/02"},
+      count: 1
+   })
+
+      if (searchKey == 'brand') { // if find by brand dtdd/samsung 
+         try {
+            const curPage = req._page ? req._page.curPage : 1;
+            const pageSize = req._page ? req._page.pageSize : 5;
+
+            const products = await db.Product.findAndCountAll({
+               offset: 0,
+               limit: pageSize * curPage,
+               where: {
+                  category: categories[category],
+                  brand: [key],
+               },
+               raw:  true,
+            })
+            res.json(products)
+            // if (products) 
+            //    else res.json("khong tim thay")
+         } catch {
+            res.json("loi server")
+         }
+      } else try { // if get one by href dtdd/samsung-galaxy-s22
+         const product = await db.Product.findAll({
+            where: {
+               href: key
+            },
             attributes: {
                exclude: ["createdAt", "updatedAt"],
             },
-            include: [
-               {
-                  model: db.Detail,
-                  as: "data",
-                  attributes: {
-                     exclude: ["createdAt", "updatedAt", "id"],
-                  },
+            include: [{
+               model: db.Detail,
+               as: "data",
+               attributes: {
+                  exclude: ["createdAt", "updatedAt"],
                },
-            ],
+            }, ],
          });
          if (product) res.json(product);
          else res.json("product not found");

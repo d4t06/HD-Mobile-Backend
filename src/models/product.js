@@ -11,17 +11,28 @@ module.exports = (sequelize, DataTypes) => {
          // hasone target is define in a
          // belongto target is define in b
          Product.belongsTo(models.Detail, {
-            foreignKey: "href",
             targetKey: "key",
+            foreignKey: "href",
             as: "data",
          });
+         Product.hasOne(models.Demand, {
+            targetKey: "href",
+            as: "demand"
+         })
+         // Product.hasOne(models.Detail, {
+         //    targetKey: "href",
+         //    // foreignKey: "key",
+         //    as: "data",
+         // });
       }
    }
    Product.init(
       {
          href: DataTypes.STRING,
+         brand: DataTypes.STRING,
          name: DataTypes.STRING,
          category: DataTypes.STRING,
+         quantity: DataTypes.INTEGER,
          image: DataTypes.STRING,
          feature: DataTypes.STRING,
          old_price: DataTypes.INTEGER,

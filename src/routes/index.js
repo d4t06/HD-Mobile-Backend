@@ -7,6 +7,7 @@ const insertController = require("../controllers/InsertController");
 // middleware
 const tokenMiddleware = require("../middleWares/tokenMiddleware");
 const roleMiddleware = require("../middleWares/roleMiddleware");
+const filterMiddleware = require("../middleWares/filterMiddleware");
 
 const route = function (app) {
    // public route
@@ -16,12 +17,14 @@ const route = function (app) {
 
    app.get("/insert", insertController.index);
 
-   app.use("/product-management", productsRouter);
+   app.use("/api", productsRouter);
+
+   // app.use("/", productsRouter);
 
    // private route
-   app.use(tokenMiddleware);
-   app.use(roleMiddleware.isAdmin);
-   app.use("/user-management", userRouter);
+   // app.use(tokenMiddleware);
+   // app.use(roleMiddleware.isAdmin);
+   // app.use("/user" ,userRouter);
 };
 
 module.exports = route;
