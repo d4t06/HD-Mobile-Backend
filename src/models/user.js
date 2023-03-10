@@ -8,22 +8,23 @@ module.exports = (sequelize, DataTypes) => {
        * The `models/index` file will call this method automatically.
        */
       static associate(models) {
-         // define association here
+         // hasone target is define in a
+         // belongto target is define in b
+         // phai includes trong findOne
          User.belongsTo(models.Role, {
-            // value foreignkey phai bang voi value target key
-            foreignKey: "role_code",
             targetKey: "code",
-            as: "roleData",
+            foreignKey: "role_code",
+            as: "role_data",
          });
       }
    }
    User.init(
       {
+         role_code: DataTypes.STRING,
          username: DataTypes.STRING,
          password: DataTypes.STRING,
          avatar: DataTypes.STRING,
          display_name: DataTypes.STRING,
-         role_code: DataTypes.STRING,
       },
       {
          sequelize,

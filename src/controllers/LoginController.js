@@ -6,23 +6,31 @@ const User = require("../models/user");
 
 class NewsController {
    async handleLogin(req, res) {
-      const {username, password} = req.body;
+      const { username, password } = req.body;
 
       // check payload
       if (!username || !password) {
-         res.json("missing payload");
+         res.status(400);
          return;
       }
       // service
       try {
          const user = await db.User.findOne({
             where: {
-               username: username
+               username: username,
             },
-            raw: true,
-            atrtibutes: {
-               exclude: ["password"]
+            attributes: {
+               exclude: ["createdAt", "updatedAt", "password"],
             },
+            include: [
+               {
+                  model: db.Role,
+                  as: "role_data",
+                  attributes: {
+                     exclude: ["createdAt", "updatedAt"],
+                  },
+               },
+            ],
          });
 
          if (user) {
@@ -31,45 +39,48 @@ class NewsController {
                user.password
             );
             if (isCorrectPassword) {
-               const {id, username, role_code} = user;
-               const token = jwt.sign({
-                  id,
-                  username,
-                  role_code
-               },
-                  "nguyenhuudat", {
-                     expiresIn: "1d"
+               const { id, username, role_code } = user;
+               const token = jwt.sign(
+                  {
+                     id,
+                     username,
+                     role_code,
+                  },
+                  "nguyenhuudat",
+                  {
+                     expiresIn: "1d",
                   }
                );
                res.json({
-                  token: `bearer ${token}`
+                  ...user,
+                  token: `bearer ${token}`,
                });
                return;
             } else {
-               res.json("tai khoan hoac mat khau khong dung");
+               res.status(401).json("mau khau hoac tai khoan khong ");
             }
          } else {
-            res.json("tai khoan hoac mat khau khong dung");
+            res.status(401).json("mau khau hoac tai khoan khong dung");
          }
-      } catch ( error ) {
+      } catch (error) {
          console.log(error);
          res.status(500).json("loi server");
       }
    }
    async handleRegister(req, res, next) {
-      const {username, password, ...otherInfo} = req.body;
+      const { username, password, ...otherInfo } = req.body;
 
       // res.json({ username, password, ...otherInfo });
       // return;
       try {
          const process = await db.User.findOne({
             where: {
-               username: username
+               username: username,
             },
          });
          const isCreated = await process;
          req.isCreated = isCreated;
-      } catch ( error ) {
+      } catch (error) {
          console.log(error);
          res.json("co loi");
       }
@@ -92,7 +103,7 @@ class NewsController {
             if (process) {
                res.json("dang ky thanh cong");
             } else res.json("loi khi dang dang ky");
-         } catch ( error ) {
+         } catch (error) {
             console.log(error);
             res.status(500).json("lỗi khi gen hash hoac dang ky");
          }

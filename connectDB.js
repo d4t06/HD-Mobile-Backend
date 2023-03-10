@@ -9,21 +9,6 @@ const sequelize = new Sequelize("hd_shop_dev", "root", "", {
    },
 });
 
-const Product = sequelize.define("Product", {
-   name: {
-      type: DataTypes.STRING,
-   },
-   image: {
-      type: DataTypes.STRING,
-   },
-   old_price: {
-      type: DataTypes.NUMBER,
-   },
-   cur_price: {
-      type: DataTypes.NUMBER,
-   },
-});
-
 module.exports = (async () => {
    try {
       await sequelize.authenticate();

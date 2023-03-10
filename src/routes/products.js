@@ -5,16 +5,19 @@ const route = express.Router();
 const productsController = require("../controllers/ProductsController");
 // middle
 const paginationMiddleware = require("../middleWares/paginationMiddleware");
+const sortMiddleware = require("../middleWares/sortMiddleware");
 
-route.get("/", paginationMiddleware, productsController.index);
+route.get("/", paginationMiddleware, sortMiddleware, productsController.index);
 
-route.get("/:category/:key", productsController.getProducts);
+route.post("/", productsController.buy);
+
+route.get("/search", paginationMiddleware, sortMiddleware, productsController.search)
+
+route.get("/:category/:key", productsController.getOne);
+
 
 // route.get("/laptop/:key", productsController.getByKey);
 
 
-route.get("/", (res, req) => {
-   req.json("products");
-});
 
 module.exports = route;

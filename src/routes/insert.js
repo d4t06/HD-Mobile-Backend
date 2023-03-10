@@ -1,7 +1,7 @@
 const insertController = require("../controllers/InsertController");
 
 const route = function (app) {
-   app.get("/inser", insertController.index);
+   app.get("/insert", insertController.index);
 };
 
 // module.exports = route

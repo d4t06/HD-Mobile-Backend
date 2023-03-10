@@ -7,7 +7,6 @@ const insertController = require("../controllers/InsertController");
 // middleware
 const tokenMiddleware = require("../middleWares/tokenMiddleware");
 const roleMiddleware = require("../middleWares/roleMiddleware");
-const filterMiddleware = require("../middleWares/filterMiddleware");
 
 const route = function (app) {
    // public route
@@ -19,8 +18,9 @@ const route = function (app) {
 
    app.use("/api", productsRouter);
 
-   // app.use("/", productsRouter);
-
+   app.use("/", (res, req) => {
+      req.json("Resource not found");
+   });
    // private route
    // app.use(tokenMiddleware);
    // app.use(roleMiddleware.isAdmin);

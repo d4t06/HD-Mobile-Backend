@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
        */
       static associate(models) {
          // define association here
+         // Role.hasOne(models.User, {
+         //    target: "code",
+         //    foreignKey: "role_code",
+         // });
       }
    }
    Role.init(
@@ -19,10 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       {
          sequelize,
          modelName: "Role",
-         name: {
-            singular: "Role",
-            plural: "Roles",
-         },
       }
    );
    return Role;
