@@ -5,15 +5,15 @@ class UserController {
       //   return;
       const userInfo = req.userInfo;
       try {
-         const user = await db.User.findOne({
-            where: { id: userInfo.id },
+         const user = await db.User.findAll({
+            // where: { id: userInfo.id },
             attributes: {
                exclude: ["password", "role_code"],
             },
             include: [
                {
                   model: db.Role,
-                  as: "roleData",
+                  as: "role_data",
                   attributes: {
                      exclude: ["createdAt", "updatedAt"],
                   },
@@ -21,8 +21,9 @@ class UserController {
             ],
          });
          res.json(user);
-         //  console.log(user);
-      } catch (error) {}
+      } catch (error) {
+         res.status(500).json({ message: error.message });
+      }
    }
 }
 

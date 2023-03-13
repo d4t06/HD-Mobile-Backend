@@ -2,8 +2,9 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async function (req, res, next) {
    console.log("token middleware passed");
-   if(!req.headers.authorization) return res.json("Loi xac thuc")
+   if (!req.headers.authorization) return res.sendStatus(401)
    const token = req.headers.authorization.split(" ")[1];
+
    try {
       const userInfo = jwt.verify(token, "nguyenhuudat");
       if (userInfo) {
@@ -11,6 +12,6 @@ module.exports = async function (req, res, next) {
          next();
       }
    } catch (error) {
-      res.status(500).json("token invalid or expired");
+      res.sendStatus(403)
    }
 };

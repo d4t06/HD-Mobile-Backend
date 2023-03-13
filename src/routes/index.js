@@ -1,30 +1,33 @@
 // router
 const userRouter = require("./user");
 const productsRouter = require("./products");
+const authRouter = require("./auth");
+const refreshRouter = require("./refresh");
+const logoutRouter = require("./logout");
 // controller
-const loginController = require("../controllers/LoginController");
 const insertController = require("../controllers/InsertController");
 // middleware
 const tokenMiddleware = require("../middleWares/tokenMiddleware");
-const roleMiddleware = require("../middleWares/roleMiddleware");
+// const roleMiddleware = require("../middleWares/roleMiddleware");
 
 const route = function (app) {
-   // public route
-   app.post("/login", loginController.handleLogin);
+   app.use("/api/insert", insertController.index);
 
-   app.post("/register", loginController.handleRegister);
+   app.use("/api/auth", authRouter);
 
-   app.get("/insert", insertController.index);
+   app.use("/api/refresh", refreshRouter);
 
-   app.use("/api", productsRouter);
+   app.use("/api/logout", logoutRouter);
+
+   app.use("/api/products", productsRouter);
+
+   app.use(tokenMiddleware);
+
+   app.use("/api/users", userRouter);
 
    app.use("/", (res, req) => {
-      req.json("Resource not found");
+      req.status(404).json("Resource not found");
    });
-   // private route
-   // app.use(tokenMiddleware);
-   // app.use(roleMiddleware.isAdmin);
-   // app.use("/user" ,userRouter);
 };
 
 module.exports = route;

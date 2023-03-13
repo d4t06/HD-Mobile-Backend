@@ -19,27 +19,29 @@ GET http://localhost:3000/products HTTP/1.1
 }
 
 ###
-GET http://localhost:3000/insert HTTP/1.1
+POST http://localhost:3000/api/refresh HTTP/1.1
 
 ###
-GET http://localhost:3000/user-management/user HTTP/1.1
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJkYXRuaCIsInJvbGVfY29kZSI6IlIxIiwiaWF0IjoxNjc1MjQyMTY0LCJleHAiOjE2NzUzMjg1NjR9.ANxm6q6dIFo-hUHymIiZve2EmlqmHU5jLQ5mxlTlXTg
+POST http://localhost:3000/api/logout HTTP/1.1
+
 ###
-POST http://localhost:3000/register HTTP/1.1
+GET http://localhost:3000/api/users HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGVfY29kZSI6IlIxIiwiaWF0IjoxNjc4NzIwNjgyLCJleHAiOjE2Nzg3MjA3MTJ9.ii_xcNR1FAYOgg4kCmynuXkpE44zAz4EzMLwZaBJsEM
+
+###
+POST http://localhost:3000/api/auth/register HTTP/1.1
 content-Type: application/json
 
 {
-    "username": "datnh",
-    "password": "123123",
-    "display_name":"datnh",
-    "avatar":"avatar"
+    "username": "admin",
+    "password": "admin"
 }
 ###
 
-POST http://localhost:3000/login HTTP/1.1
+POST http://localhost:3000/api/auth/login HTTP/1.1
 content-Type: application/json
 
 {
-    "username": "datnh",
-    "password":"123123"
+    "username": "admin",
+    "password":"admin"
 }
