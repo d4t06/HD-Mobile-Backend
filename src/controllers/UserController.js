@@ -1,24 +1,21 @@
 const db = require("../models");
 class UserController {
    async index(req, res, next) {
-      //   res.json(req.userInfo);
-      //   return;
-      const userInfo = req.userInfo;
       try {
          const user = await db.User.findAll({
             // where: { id: userInfo.id },
             attributes: {
                exclude: ["password", "role_code"],
             },
-            include: [
-               {
-                  model: db.Role,
-                  as: "role_data",
-                  attributes: {
-                     exclude: ["createdAt", "updatedAt"],
-                  },
-               },
-            ],
+            // include: [
+            //    {
+            //       model: db.Role,
+            //       as: "role_data",
+            //       attributes: {
+            //          exclude: ["createdAt", "updatedAt"],
+            //       },
+            //    },
+            // ],
          });
          res.json(user);
       } catch (error) {

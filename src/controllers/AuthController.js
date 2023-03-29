@@ -24,40 +24,41 @@ class AuthController {
                exclude: ["createdAt", "updatedAt"],
             },
             raw: true,
-            include: [
-               {
-                  model: db.Role,
-                  as: "role_data",
-                  attributes: {
-                     exclude: ["createdAt", "updatedAt"],
-                  },
-               },
-            ],
+            // include: [
+            //    {
+            //       model: db.Role,
+            //       as: "role_data",
+            //       attributes: {
+            //          exclude: ["createdAt", "updatedAt"],
+            //       },
+            //    },
+            // ],
          });
 
          if (!user) return res.sendStatus(401); // unauthorized
-         const isCorrectPassword = await bcrypt.compare(password, user.password);
+         const isCorrectPassword = await bcrypt.compare(
+            password,
+            user.password
+         );
 
          if (isCorrectPassword) {
-            const { id, username, role_code } = user;
+            const { role_code } = user;
 
             const token = jwt.sign(
                {
-                  id,
                   username,
-                  role_code,
+                  role_code
                },
                "nguyenhuudat",
                {
-                  expiresIn: "30s",
+                  expiresIn: "10s",
                }
             );
 
             const refreshToken = jwt.sign(
                {
-                  id,
                   username,
-                  role_code,
+                  role_code
                },
                "nguyenhuudat",
                {
@@ -75,12 +76,14 @@ class AuthController {
                maxAge: 24 * 60 * 60 * 1000,
             });
             res.json({
-               ...user,
-               token: `bearer ${token}`,
+               role_code: role_code,
+               token: token,
             });
+
          } else {
             res.sendStatus(401);
          }
+
       } catch (error) {
          res.status(500).json({ message: error.message });
       }

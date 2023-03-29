@@ -3,7 +3,6 @@ const userRouter = require("./user");
 const productsRouter = require("./products");
 const authRouter = require("./auth");
 const refreshRouter = require("./refresh");
-const logoutRouter = require("./logout");
 // controller
 const insertController = require("../controllers/InsertController");
 // middleware
@@ -16,8 +15,6 @@ const route = function (app) {
    app.use("/api/auth", authRouter);
 
    app.use("/api/refresh", refreshRouter);
-
-   app.use("/api/logout", logoutRouter);
 
    app.use("/api/products", productsRouter);
 

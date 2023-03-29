@@ -1,32 +1,12 @@
 ###
-GET http://localhost:3000/products/laptop
+GET http://localhost:3000/api/refresh HTTP/1.1
 
 ###
-GET http://localhost:3000/products/dtdd
-
-###
-GET http://localhost:3000/user
-
-###
-content-Type: application/json
-GET http://localhost:3000/products HTTP/1.1
-{
-    "username": "datnh",
-    "password": "123123",
-    "display_name":"datnh",
-    
-    "avatar":"avatar"
-}
-
-###
-POST http://localhost:3000/api/refresh HTTP/1.1
-
-###
-POST http://localhost:3000/api/logout HTTP/1.1
+GET http://localhost:3000/api/logout HTTP/1.1
 
 ###
 GET http://localhost:3000/api/users HTTP/1.1
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGVfY29kZSI6IlIxIiwiaWF0IjoxNjc4NzIwNjgyLCJleHAiOjE2Nzg3MjA3MTJ9.ii_xcNR1FAYOgg4kCmynuXkpE44zAz4EzMLwZaBJsEM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjc4Nzk1ODE4LCJleHAiOjE2Nzg3OTU4NDh9.ZrEEKRTyU5lH7mzJapGQryfksawMev8kub0kXgFl9HI
 
 ###
 POST http://localhost:3000/api/auth/register HTTP/1.1

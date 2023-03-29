@@ -7,8 +7,11 @@ const methodOverride = require("method-override");
 const cookiesParser = require("cookie-parser");
 const corsOptions = require("./src/config/corsOption");
 
+const whiteList = ["http://localhost:3001"];
 // cross origin resource sharing
-app.use(cors(corsOptions));
+app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
+
+// app.use(cors(corsOptions));
 
 // middleware for cookie
 app.use(cookiesParser());
@@ -25,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 // for put, delete method
 app.use(methodOverride("_method"));
 
-//Routes
+//routes
 route(app);
 
 app.listen(port, () => {

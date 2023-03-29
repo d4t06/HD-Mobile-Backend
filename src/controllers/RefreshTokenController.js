@@ -8,27 +8,28 @@ const handleRefreshToken = async (req, res) => {
 
    const refreshToken = cookies.jwt;
 
-   const user = await db.User.findOne({ where: { refresh_token: refreshToken } });
-   console.log(user);
+   const user = await db.User.findOne({
+      where: { refresh_token: refreshToken },
+   });
 
    if (!user) return res.sendStatus(403); //forbidden
 
    jwt.verify(refreshToken, "nguyenhuudat", (err, decode) => {
       if (err || user.username !== decode.username) return res.sendStatus(403);
 
-      const accessToken = jwt.sign(
+      const role_code = decode.role_code
+      const token = jwt.sign(
          {
-            id: decode.id,
             username: decode.username,
-            role_code: decode.role_code,
+            role_code: role_code,
          },
          "nguyenhuudat",
          {
-            expiresIn: "30s",
+            expiresIn: "10s",
          }
       );
 
-      res.json({ accessToken });
+      res.json({token, role_code});
    });
 };
 
