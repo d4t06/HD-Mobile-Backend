@@ -5,9 +5,9 @@ const port = 3000;
 const route = require("./src/routes");
 const methodOverride = require("method-override");
 const cookiesParser = require("cookie-parser");
-const corsOptions = require("./src/config/corsOption");
+// const corsOptions = require("./src/config/corsOption");
 
-const whiteList = ["http://localhost:3001"];
+// const whiteList = ["http://localhost:3001"];
 // cross origin resource sharing
 app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
 
