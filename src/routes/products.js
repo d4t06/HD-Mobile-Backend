@@ -1,20 +1,19 @@
 const { application } = require("express");
 const express = require("express");
-const route = express.Router();
+const router = express.Router();
 // controller
 const productsController = require("../controllers/ProductsController");
-// middle
-// const paginationMiddleware = require("../middleWares/paginationMiddleware");
+
+const paginationMiddleware = require("../middleWares/paginationMiddleware");
 const sortMiddleware = require("../middleWares/sortMiddleware");
 
-route.get("/", sortMiddleware, productsController.index);
+router.get("/:category/:id", productsController.getDetail);
 
-route.post("/", productsController.buy);
+// router.use(paginationMiddleware);
+router.use(sortMiddleware);
 
-route.get("/search", sortMiddleware, productsController.search);
+router.get("/search", productsController.search);
 
-route.get("/:category/:key", productsController.getOne);
+router.get("/:category", productsController.getProducts);
 
-// route.get("/laptop/:key", productsController.getByKey);
-
-module.exports = route;
+module.exports = router;

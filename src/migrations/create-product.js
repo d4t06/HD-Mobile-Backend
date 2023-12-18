@@ -4,54 +4,33 @@ module.exports = {
    async up(queryInterface, Sequelize) {
       await queryInterface.createTable("Products", {
          id: {
-            allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         href: {
+         product_name_ascii: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+         },
+         brand_name_ascii: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            references: { model: "Brands", key: "brand_name_ascii" },
+         },
+         category_name_ascii: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            references: { model: "Categories", key: "category_name_ascii" },
+         },
+         product_name: {
             type: Sequelize.STRING,
          },
-         brand: {
+         image_url: {
             type: Sequelize.STRING,
          },
-         name: {
-            type: Sequelize.STRING,
-         },
-         category: {
-            type: Sequelize.STRING,
-         },
-         quantity: {
-            type: Sequelize.INTEGER,
-         },
-         image: {
-            type: Sequelize.STRING,
-         },
-         feature: {
-            type: Sequelize.STRING,
-         },
-         old_price: {
-            allowNull: true, //defaul
-            type: Sequelize.INTEGER,
-         },
-         cur_price: {
-            type: Sequelize.INTEGER,
-         },
-         product_label: {
-            allowNull: true,
-            type: Sequelize.STRING,
-         },
-         intallment: {
+         installment: {
             type: Sequelize.BOOLEAN,
-         },
-         label: {
-            type: Sequelize.STRING,
-         },
-         gift: {
-            type: Sequelize.STRING,
-         },
-         pre_order: {
-            type: Sequelize.STRING,
          },
          createdAt: {
             allowNull: false,

@@ -4,34 +4,20 @@ module.exports = {
    async up(queryInterface, Sequelize) {
       await queryInterface.createTable("Details", {
          id: {
-            allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         key: {
+         product_name_ascii: {
             type: Sequelize.STRING,
+            allowNull: false,
+            references: {
+               model: "Products",
+               key: 'product_name_ascii'
+            },
          },
-         title: {
-            type: Sequelize.STRING,
-         },
-         images: {
-            type: Sequelize.TEXT,
-         },
-         param_image: {
-            allowNull: true,
-            type: Sequelize.STRING,
-         },
-         colors: {
-            allowNull: true,
-            type: Sequelize.STRING,
-         },
-         memories: {
-            allowNull: true,
-            type: Sequelize.STRING,
-         },
-         params: {
-            type: Sequelize.TEXT,
+         desc : {
+            type: Sequelize.TEXT
          },
          createdAt: {
             allowNull: false,

@@ -1,18 +1,18 @@
-const mysql = require("mysql2");
-const { Sequelize, DataTypes } = require("sequelize");
+// const mysql = require("mysql2");
+const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("hd_shop_dev", "root", "", {
    host: "localhost",
    dialect: "mysql",
    logging: false,
-   define: {
-      freezeTableName: true,
-   },
+   // define: {
+   //    freezeTableName: true,
+   // },
 });
 
 module.exports = (async () => {
    try {
       await sequelize.authenticate();
-      console.log("Connection has been established successfully.");
+      console.log("Connected to db");
    } catch (error) {
       console.error("Unable to connect to the database:", error);
    }

@@ -2,33 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    async up(queryInterface, Sequelize) {
-      await queryInterface.createTable("Roles", {
+      await queryInterface.createTable("Sliders", {
          id: {
-            allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         code: {
+         slider_id: {
             type: Sequelize.STRING,
             allowNull: false,
-         },
-         value: {
             unique: true,
-            allowNull: false,
-            type: Sequelize.STRING,
          },
-         createdAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
-         },
-         updatedAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
+         slider_name: {
+            type: Sequelize.TEXT,
          },
       });
    },
    async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable("Roles");
+      await queryInterface.dropTable("Sliders");
    },
 };

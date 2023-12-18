@@ -2,6 +2,56 @@
 GET http://localhost:3000/api/refresh HTTP/1.1
 
 ###
+GET http://localhost:3000/api/app/category HTTP/1.1
+
+###
+GET http://localhost:3000/api/app/brand
+
+###
+GET http://localhost:3000/api/images
+
+###
+GET http://localhost:3000/api/products/dien_thoai?page=1&column=price&type=desc
+
+
+
+
+
+
+
+###
+GET http://localhost:3000/api/products/dien-thoai
+
+###
+GET http://localhost:3000/api/products/dien_thoai/iphone-11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 
+GET http://localhost:3000/api/products/dien_thoai?page=1&brand_id[]=iphone&column=price&type=desc
+### 
+GET http://localhost:3000/api/products/dtdd/iphone-11
+###
 GET http://localhost:3000/api/logout HTTP/1.1
 
 ###
@@ -25,3 +75,42 @@ content-Type: application/json
     "username": "admin",
     "password":"admin"
 }
+
+### 
+POST http://localhost:3000/api/product/management
+content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZV9jb2RlIjoiUjEiLCJpYXQiOjE3MDIzOTA5MjEsImV4cCI6MTcwMjQ3NzMyMX0.EuoUDVM1b7jGfWO7J73t8TMUGi6rP5a9oGA2oN5Nerk
+
+   {
+      "product_id": "iphone-15-pro-max-1t",
+      "brand_name": "iphone",
+      "name": "iPhone 15 Pro Max 1T",
+      "category_name": "dtdd",
+      "image_file_path": "",
+      "image_url": "https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
+      "old_price": 40999999,
+      "cur_price": 40290000,
+      "installment": true
+   }
+
+###
+POST http://localhost:3000/api/product/management/update
+content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZV9jb2RlIjoiUjEiLCJpYXQiOjE3MDIzOTA5MjEsImV4cCI6MTcwMjQ3NzMyMX0.EuoUDVM1b7jGfWO7J73t8TMUGi6rP5a9oGA2oN5Nerk
+
+   {
+      "product_id": "iphone-15-pro-max-1t",
+      "brand_name": "iphone",
+      "name": "iPhone 15 Ultra Premium Pro Max Special 2T",
+      "category_name": "dtdd",
+      "image_file_path": "",
+      "image_url": "https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
+      "old_price": ,
+      "cur_price": 40290000,
+      "installment": true
+   }
+
+
+### 
+GET  http://localhost:3000/api/product/management/delete/iphone-15-pro-max-1t
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZV9jb2RlIjoiUjEiLCJpYXQiOjE3MDIzOTA5MjEsImV4cCI6MTcwMjQ3NzMyMX0.EuoUDVM1b7jGfWO7J73t8TMUGi6rP5a9oGA2oN5Nerk

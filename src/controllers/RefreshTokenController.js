@@ -14,7 +14,7 @@ const handleRefreshToken = async (req, res) => {
 
    if (!user) return res.sendStatus(403); //forbidden
 
-   jwt.verify(refreshToken, "nguyenhuudat", (err, decode) => {
+   jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decode) => {
       if (err || user.username !== decode.username) return res.sendStatus(403);
 
       const role_code = decode.role_code
@@ -23,7 +23,7 @@ const handleRefreshToken = async (req, res) => {
             username: decode.username,
             role_code: role_code,
          },
-         "nguyenhuudat",
+         process.env.JWT_SECRET,
          {
             expiresIn: "10s",
          }
