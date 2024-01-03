@@ -8,11 +8,6 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         slider_id: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-         },
          slider_name: {
             type: Sequelize.TEXT,
          },

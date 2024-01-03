@@ -13,21 +13,40 @@ module.exports = (sequelize, DataTypes) => {
          });
 
          Product.hasOne(models.Brand, {
-            sourceKey: "brand_name_ascii",
-            foreignKey: "brand_name_ascii",
+            sourceKey: "brand_id",
+            foreignKey: "id",
             as: "brand_data",
          });
 
          Product.hasOne(models.Category, {
-            sourceKey: "category_name_ascii",
-            foreignKey: "category_name_ascii",
+            sourceKey: "category_id",
+            foreignKey: "id",
             as: "category_data",
          });
 
          Product.hasMany(models.Product_Storage, {
             sourceKey: "product_name_ascii",
             foreignKey: "product_name_ascii",
-            as: "storage_data",
+            as: "storages_data",
+         });
+
+
+         Product.hasMany(models.Product_Color, {
+            sourceKey: "product_name_ascii",
+            foreignKey: "product_name_ascii",
+            as: "colors_data",
+         });
+
+         Product.hasMany(models.Product_Combine, {
+            sourceKey: "product_name_ascii",
+            foreignKey: "product_name_ascii",
+            as: "combines_data",
+         });
+
+         Product.hasMany(models.Product_Slider, {
+            sourceKey: "product_name_ascii",
+            foreignKey: "product_name_ascii",
+            as: "sliders_data",
          });
       }
    }
@@ -35,8 +54,8 @@ module.exports = (sequelize, DataTypes) => {
    Product.init(
       {
          product_name_ascii: DataTypes.STRING,
-         brand_name_ascii: DataTypes.STRING,
-         category_name_ascii: DataTypes.STRING,
+         brand_id: DataTypes.STRING,
+         category_id: DataTypes.STRING,
          product_name: DataTypes.STRING,
          image_url: DataTypes.STRING,
          installment: DataTypes.BOOLEAN,

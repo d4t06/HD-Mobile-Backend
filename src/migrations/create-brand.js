@@ -8,7 +8,15 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         brand_name_ascii: {
+         category_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            references: {
+               model: "Categories",
+               key: 'id'
+            }
+         },
+         brand_ascii: {
             type: Sequelize.STRING,
             unique: true,
             allowNull: false,

@@ -2,35 +2,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    async up(queryInterface, Sequelize) {
-      await queryInterface.createTable("Product_Storage_Colors", {
+      await queryInterface.createTable("Product_Combines", {
          id: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         storage_ascii: {
+         product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
             references: {
-               model: "Product_Storages",
-               key: "storage_ascii",
+               model: "Products",
+               key: "product_name_ascii",
             },
          },
-         color_ascii: {
-            unique: true,
+         color_id: {
             allowNull: false,
-            type: Sequelize.STRING,
-         },
-         color: {
-            allowNull: false,
-            type: Sequelize.STRING,
-         },
-         slider_id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             references: {
-               model: 'Sliders',
-               key: 'slider_id'
-            }
+               model: "Product_Colors",
+               key: "id",
+            },
+         },
+         storage_id: {
+            allowNull: false,
+            type: Sequelize.INTEGER,
+            references: {
+               model: "Product_Storages",
+               key: "id",
+            },
          },
          price: {
             allowNull: false,
@@ -40,9 +40,12 @@ module.exports = {
             allowNull: false,
             type: Sequelize.INTEGER,
          },
+         default: {
+            type: Sequelize.BOOLEAN,
+         },
       });
    },
    async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable("Product_Storage_Colors");
+      await queryInterface.dropTable("Product_Combines");
    },
 };

@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
    }
    Brand.init(
       {
-         brand_name_ascii: DataTypes.STRING,
-         image_url: DataTypes.STRING,
+         category_id: DataTypes.INTEGER,
+         brand_ascii: DataTypes.STRING,
          brand_name: DataTypes.STRING,
+         image_url: DataTypes.STRING,
       },
       {
          sequelize,
-         timestamps: false
+         timestamps: false,
       }
    );
    return Brand;

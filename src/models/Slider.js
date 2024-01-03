@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
    class Slider extends Model {
       static associate(models) {
          Slider.hasMany(models.Slider_Image, {
-            sourceKey: "slider_id",
+            sourceKey: "id",
             foreignKey: "slider_id",
             as: "images",
          });
@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
    }
    Slider.init(
       {
-         slider_id: DataTypes.STRING,
          slider_name: DataTypes.STRING,
       },
       {

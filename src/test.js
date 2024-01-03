@@ -44,8 +44,17 @@ const getVariant = async () => {
    return;
 };
 
+const getBrand = async () => {
+   const data = await models.Brand.findAll({ group: 'category_id' });
+
+   console.log(data);
+   return;
+};
+
 // getUser()
 // getVariant();
-getVariant()
+// getBrand()
+
+console.log([''].length)
 
 // console.log({...{}})

@@ -2,38 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    async up(queryInterface, Sequelize) {
-      await queryInterface.createTable("Product_Storages", {
+      await queryInterface.createTable("Product_Sliders", {
          id: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
+         slider_id: {
+            type: Sequelize.INTEGER,
+            references: {
+               model: "Sliders",
+               key: "id",
+            },
+         },
          product_name_ascii: {
             type: Sequelize.STRING,
-            allowNull: false,
             references: {
                model: "Products",
                key: "product_name_ascii",
             },
          },
-         storage_ascii: {
-            type: Sequelize.STRING,
-            allowNull: false,
-         },
-         storage: {
-            allowNull: false,
-            type: Sequelize.STRING,
-         },
-         base_price: {
-            allowNull: false,
+         color_id: {
             type: Sequelize.INTEGER,
-         },
-         default: {
-            type: Sequelize.BOOLEAN,
+            references: {
+               model: "Product_Colors",
+               key: "id",
+            },
          },
       });
    },
    async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable("Product_Storages");
+      await queryInterface.dropTable("Product_Sliders");
    },
 };

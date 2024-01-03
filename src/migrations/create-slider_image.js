@@ -9,18 +9,15 @@ module.exports = {
             type: Sequelize.INTEGER,
          },
          slider_id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false,
             references: {
                model: "Sliders",
-               key: "slider_id",
+               key: "id",
             },
          },
-         image_id: {
-            type: Sequelize.INTEGER,
-            references: {
-               model: "Images",
-            },
+         image_url: {
+            type: Sequelize.STRING,
          },
       });
    },

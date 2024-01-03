@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
          image_file_path: DataTypes.STRING,
          name: DataTypes.STRING,
          size: DataTypes.INTEGER,
+         link_to: DataTypes.STRING,
       },
       {
          sequelize,

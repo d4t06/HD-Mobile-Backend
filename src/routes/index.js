@@ -3,13 +3,20 @@ const userRouter = require("./user");
 const productsRouter = require("./products");
 const authRouter = require("./auth");
 const refreshRouter = require("./refresh");
-const cudRouter = require("./cud");
+const cudProductRouter = require("./cudProduct");
+const cudStorageRouter = require("./cudStorage");
+const cudColorRouter = require("./cudColor");
+const cudCombineRouter = require("./cudCombine");
+const cudSliderRouter = require("./cudSlider");
+
+const cdProductSlider = require("./cdProductSlider");
+
 const appRouter = require("./app");
 const imageRouter = require("./image");
 // controller
-const insertController = require("../controllers/InsertController");
+// const insertController = require("../controllers/InsertController");
 // middleware
-const tokenMiddleware = require("../middleWares/tokenMiddleware");
+// const tokenMiddleware = require("../middleWares/tokenMiddleware");
 // const roleMiddleware = require("../middleWares/roleMiddleware");
 
 const route = function (app) {
@@ -22,11 +29,21 @@ const route = function (app) {
    app.use("/api/products", productsRouter);
 
    // app.use(tokenMiddleware);
-   app.use("/api/images", imageRouter)
+   app.use("/api/image-management", imageRouter);
 
    app.use("/api/users", userRouter);
 
-   app.use("/api/product-management", cudRouter);
+   app.use("/api/product-management", cudProductRouter);
+
+   app.use("/api/storage-management", cudStorageRouter);
+
+   app.use("/api/color-management", cudColorRouter);
+
+   app.use("/api/combine-management", cudCombineRouter);
+
+   app.use("/api/slider-management", cudSliderRouter);
+
+   app.use("/api/product-slider-management", cdProductSlider);
 
    app.use("/", (res, req) => {
       req.status(404).json("Resource not found");

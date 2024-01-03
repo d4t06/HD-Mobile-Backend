@@ -9,15 +9,17 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         category_name_ascii: {
+         category_ascii: {
             type: Sequelize.STRING,
-            unique: true,
             allowNull: false,
          },
-         name: {
+         category_name: {
             allowNull: false,
             type: Sequelize.STRING,
-         }
+         },
+         icon: {
+            type: Sequelize.STRING,
+         },
       });
    },
    async down(queryInterface, Sequelize) {

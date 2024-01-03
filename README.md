@@ -10,3 +10,8 @@ npx sequelize-cli db:migrate
 
 -  /refresh trong auth router
 -  Fix logic pagination, mỗi trang chỉ trả về pageSize phần tử trang đó
+
+
+npx sequelize-cli db:migrate --name create-product_color.js
+npx sequelize-cli db:migrate --name create-product_storage.js
+npx sequelize-cli db:migrate --name create-product_combine.js

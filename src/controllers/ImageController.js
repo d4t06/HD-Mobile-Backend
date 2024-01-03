@@ -1,13 +1,14 @@
 const models = require("../models");
 const fs = require("fs");
 
-const IMAGE_URL = "http://localhost:3000/";
+function errorRes(res) {
+   return res.status(402).json({ status: "error", message: "missing payload" });
+}
 
 class ImageController {
    async getImages(req, res) {
       try {
-         const images = await models.Image.findAll({});
-
+         const images = await models.Image.findAll({ order: [["createdAt", "DESC"]] });
          res.json(images);
       } catch (error) {
          console.log(error);
@@ -17,15 +18,15 @@ class ImageController {
    async addOne(req, res) {
       try {
          if (!req.file) {
-            return res.status(402).json({ status: "finish", message: "missing payload" });
+            return errorRes(res);
          }
 
          const { filename, path, size } = req.file;
          const imageInfo = {
             name: filename,
-            image_file_path: process.env.URL + "/" + path,
+            image_file_path: path,
             size: Math.floor(size / 1024),
-            image_url: path,
+            image_url: process.env.URL + "/" + path,
          };
 
          const newImage = await models.Image.create({ ...imageInfo });
@@ -37,21 +38,21 @@ class ImageController {
    }
    async deleteOne(req, res) {
       try {
-         const { fileName } = req.params;
+         const imageData = req.body;
 
-         console.log(fileName);
+         if (!imageData) {
+            return errorRes(res);
+         }
 
-         //  remove on database
-         //   await Image.deleteOne({name: fileName});
-
-         // remove file
-         fs.rmSync(`uploads/${fileName}`, {
+         fs.rmSync(imageData.image_file_path, {
             force: true,
          });
 
+         await models.Image.destroy({ where: { image_file_path: imageData.image_file_path } });
+
          res.status(201).json({
             status: "successful",
-            message: "delete image sucessful",
+            message: "delete image successful",
          });
       } catch (error) {
          console.log(error);

@@ -13,15 +13,15 @@ module.exports = {
             allowNull: false,
             unique: true,
          },
-         brand_name_ascii: {
-            type: Sequelize.STRING,
+         brand_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
-            references: { model: "Brands", key: "brand_name_ascii" },
+            references: { model: "Brands", key: "id" },
          },
-         category_name_ascii: {
-            type: Sequelize.STRING,
+         category_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
-            references: { model: "Categories", key: "category_name_ascii" },
+            references: { model: "Categories", key: "id" },
          },
          product_name: {
             type: Sequelize.STRING,

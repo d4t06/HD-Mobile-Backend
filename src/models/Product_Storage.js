@@ -2,13 +2,7 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
    class Product_Storage extends Model {
-      static associate(models) {
-         Product_Storage.hasMany(models.Product_Storage_Color, {
-            sourceKey: "storage_ascii",
-            foreignKey: "storage_ascii",
-            as: "options_data",
-         });
-      }
+      static associate(models) {}
    }
    Product_Storage.init(
       {
@@ -18,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
          base_price: DataTypes.INTEGER,
          default: DataTypes.BOOLEAN,
       },
-      {  
+      {
          sequelize,
          timestamps: false,
       }

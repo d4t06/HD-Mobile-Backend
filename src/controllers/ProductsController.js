@@ -5,13 +5,7 @@ const PAGE_SIZE = +process.env.PAGE_SIZE || 6;
 
 class ProductsController {
    async getProducts(req, res) {
-      const { page = 1, price, brand_id } = req.query;
-      const { category: category_id = "dtdd" } = req.params;
-
-      console.log("check req.query", req.query);
-
-      // res.sendStatus(200)
-      // return
+      const { page = 1, price, brand_id, category_id } = req.query;
 
       // handle price range
       let priceFilter;
@@ -32,11 +26,13 @@ class ProductsController {
       let order = [];
       let where = { category_id };
 
+      if (brand_id) where['brand_id'] = brand_id;
+
       if (enable) {
          if (column === "installment") {
             where["installment"] = 1;
          } else {
-            order = [[{ model: models.Product_Variant, as: "variants_data" }, column, type]];
+            order = [[{ model: models.Product_Combine, as: "combines_data" }, column, type]];
          }
       }
 
@@ -48,28 +44,31 @@ class ProductsController {
             offset: (+page - 1) * PAGE_SIZE,
             limit: PAGE_SIZE,
             distinct: true,
-            // include: [
-            //    {
-            //       model: models.Product_Storage,
-            //       where: {
-            //          ...priceFilter,
-            //          default: true,
-            //       },
-            //       as: "storage_data",
-            //    },
-            // ],
+            include: [
+               {
+                  model: models.Product_Combine,
+                  where: {
+                     ...priceFilter,
+                     default: true,
+                  },
+                  as: "combines_data",
+               },
+            ],
             attributes: {
                exclude: ["createdAt", "updatedAt"],
             },
+            where,
             order,
          });
 
          let variants_data = [];
-         const productIds = rows.map((p) => p.product_id) || [];
+         const productIds = rows.map((p) => p.product_name_ascii) || [];
+
+         console.log("check ids", productIds);
 
          if (productIds) {
             variants_data = await models.Product_Storage.findAll({
-               where: { product_name_ascii: productIds },
+               where: { product_name_ascii: { [Sequelize.Op.in]: productIds } },
             });
          }
 
@@ -92,10 +91,14 @@ class ProductsController {
    async getDetail(req, res) {
       const { id } = req.params;
 
+      if (!id) {
+         return res.status(404).json({ message: "missing query" });
+      }
+
       try {
-         const products = await models.Product.findOne({
+         const product = await models.Product.findOne({
             where: {
-               product_id: id,
+               product_name_ascii: id,
             },
             attributes: {
                exclude: ["createdAt", "updatedAt"],
@@ -105,37 +108,56 @@ class ProductsController {
                   model: models.Detail,
                   as: "detail",
                   attributes: {
-                     exclude: ["createdAt", "updatedAt", "id"],
+                     exclude: ["createdAt", "updatedAt"],
                   },
                },
                {
-                  model: models.Product_Variant,
-                  as: "variants_data",
-                  attributes: {
-                     exclude: ["createdAt", "updatedAt", "product_id", "id"],
-                  },
+                  model: models.Product_Storage,
+                  as: "storages_data",
+               },
+               {
+                  model: models.Product_Color,
+                  as: "colors_data",
+               },
+               {
+                  model: models.Product_Slider,
+                  as: "sliders_data",
                   include: [
                      {
-                        model: models.Product_Variant_Option,
-                        as: "options_data",
-                        attributes: {
-                           exclude: ["createdAt", "updatedAt", "variant_id", "id"],
+                        model: models.Slider,
+                        as: "slider_data",
+                        include: {
+                           model: models.Slider_Image,
+                           // attributes: ["image_url"],
+                           as: "images",
                         },
-                        include: [
-                           {
-                              model: models.Product_Option,
-                              as: "option_data",
-                              attributes: {
-                                 exclude: ["createdAt", "updatedAt", "option_id", "id"],
-                              },
-                           },
-                        ],
+                     },
+                     {
+                        model: models.Product_Color,
+                        as: "color_data",
+                        attributes: ["color", "color_ascii"],
+                     },
+                  ],
+               },
+               {
+                  model: models.Product_Combine,
+                  as: "combines_data",
+                  include: [
+                     {
+                        model: models.Product_Color,
+                        as: "color_data",
+                        attributes: ["color", "color_ascii"],
+                     },
+                     {
+                        model: models.Product_Storage,
+                        as: "storage_data",
+                        attributes: ["storage", "storage_ascii"],
                      },
                   ],
                },
             ],
          });
-         res.json(products);
+         res.json(product);
       } catch (err) {
          console.log(err);
          res.status(500).json({ message: err });

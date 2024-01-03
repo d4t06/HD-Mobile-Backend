@@ -8,6 +8,9 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
+         link_to: {
+            type: Sequelize.STRING
+         },
          image_url: {
             type: Sequelize.STRING
          },
@@ -19,6 +22,10 @@ module.exports = {
          },
          size: {
             type: Sequelize.INTEGER
+         },
+         createdAt: {
+            allowNull: false,
+            type: Sequelize.DATE,
          },
       });
    },
