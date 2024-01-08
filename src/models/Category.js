@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
          category_ascii: DataTypes.STRING,
          category_name: DataTypes.STRING,
          icon: DataTypes.STRING,
+         default: DataTypes.BOOLEAN,
       },
       {
          sequelize,

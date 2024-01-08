@@ -12,8 +12,6 @@ const cookiesParser = require("cookie-parser");
 const corsOptions = require("./src/config/corsOption");
 app.use(cors(corsOptions));
 
-app.use("/uploads" ,express.static("uploads"))
-
 // middleware for cookie
 app.use(cookiesParser());
 
@@ -31,5 +29,5 @@ app.use(methodOverride("_method"));
 route(app);
 
 app.listen(port, () => {
-   console.log(`App listening on port ${port}, white list: ${process.env.WHITE_LIST}`);
+   console.log(`App listening on port ${port}, env: ${process.env.NODE_ENV}`);
 });

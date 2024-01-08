@@ -1,15 +1,15 @@
 class roleMiddleware {
    isAdmin(req, res, next) {
-      const { role_code } = req.userInfo;
-      console.log("role middleware check role =", role_code);
-      if (role_code !== "R1") return res.json("require admin role");
+      const { role } = req.userInfo;
+      console.log("role middleware check role =", role);
+      if (role !== "ADMIN") return res.json("require admin role");
       next();
    }
    isDeveloper(req, res, next) {
-      const { role_code } = req.userInfo;
-      console.log("role middleware check role = ", role_code);
+      const { role } = req.userInfo;
+      console.log("role middleware check role = ", role);
 
-      if (role_code !== "R1" && role_code !== "R2") return res.json("require developer role or higher");
+      if (role !== "ADMIN" && role !== "DEVELOPER") return res.json("require developer role or higher");
       next();
    }
 }

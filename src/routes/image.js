@@ -8,17 +8,7 @@ const ImageController = require("../controllers/ImageController");
 
 // const TokenVerify = require("../middlewares/TokenVerify");
 
-const storage = multer.diskStorage({
-   destination: (req, file, cb) => {
-      // return;
-      cb(null, "./uploads");
-   },
-   filename: function (req, file, cb) {
-      // console.log("req =", req.file);
-      // cb(null, `${req.body.href}.jpg`);
-      cb(null, file.originalname);
-   },
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // router.use(TokenVerify)

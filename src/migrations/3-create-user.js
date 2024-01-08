@@ -15,13 +15,15 @@ module.exports = {
          password: {
             type: Sequelize.STRING,
          },
+         // role_id: {
+         //    type: Sequelize.STRING,
+         //    references: {
+         //       model: "Roles",
+         //       key: "value",
+         //    },
+         // },
          role: {
             type: Sequelize.STRING,
-            defaultValue: "USER",
-            references: {
-               model: "Roles",
-               key: "value",
-            },
          },
          refresh_token: {
             type: Sequelize.STRING,

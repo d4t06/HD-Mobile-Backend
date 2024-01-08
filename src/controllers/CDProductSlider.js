@@ -30,27 +30,6 @@ class CDProductSliderController {
          });
       }
    }
-
-   async delete(req, res) {
-      try {
-         if (!req.body) {
-            return missPayloadError(res);
-         }
-
-         const id = req.body;
-         if (!id) return missPayloadError(res);
-
-         await models.Product_Storage.Destroy({ where: { id: id } });
-
-         res.status(201).json({
-            status: "successful",
-            message: "delete successful",
-         });
-      } catch (error) {
-         console.log(error);
-         res.status(501).json({ status: "fail", message: error });
-      }
-   }
 }
 
 module.exports = new CDProductSliderController();

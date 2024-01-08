@@ -1,5 +1,15 @@
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+   cloud_name: process.env.CLOUD_NAME,
+   api_key: process.env.CLOUD_API_KEY,
+   api_secret: process.env.CLOUD_API_SECRET,
+   // secure: true,
+});
+
 const models = require("../models");
-const fs = require("fs");
+const { generateId } = require("../utils/appHelper");
+
+const PAGE_SIZE = +process.env.IMAGE_PAGE_SIZE || 8;
 
 function errorRes(res) {
    return res.status(402).json({ status: "error", message: "missing payload" });
@@ -7,8 +17,13 @@ function errorRes(res) {
 
 class ImageController {
    async getImages(req, res) {
+      const { page = 1 } = req.query;
       try {
-         const images = await models.Image.findAll({ order: [["createdAt", "DESC"]] });
+         const images = await models.Image.findAll({
+            offset: (+page - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
+            order: [["createdAt", "DESC"]],
+         });
          res.json(images);
       } catch (error) {
          console.log(error);
@@ -21,34 +36,40 @@ class ImageController {
             return errorRes(res);
          }
 
-         const { filename, path, size } = req.file;
+         const { buffer, mimetype, originalname, size } = req.file;
+
+         const b64 = Buffer.from(buffer).toString("base64");
+         let dataURI = "data:" + mimetype + ";base64," + b64;
+
+         const imageUploadRes = await cloudinary.uploader.upload(dataURI, {
+            resource_type: "auto",
+         });
+
          const imageInfo = {
-            name: filename,
-            image_file_path: path,
-            size: Math.floor(size / 1024),
-            image_url: process.env.URL + "/" + path,
+            name: generateId(originalname),
+            public_id: imageUploadRes.public_id,
+            image_url: imageUploadRes.url,
+            size: Math.ceil(size / 1000),
          };
 
          const newImage = await models.Image.create({ ...imageInfo });
 
-         res.json({ status: "successful", message: "add image successful", image: newImage });
+         res.status(200).json({ status: "successful", message: "add image successful", data: newImage });
       } catch (error) {
          console.log(error);
+         res.status(500).json({ status: "failed", message: "upload image failed" });
       }
    }
    async deleteOne(req, res) {
       try {
-         const imageData = req.body;
+         const { id } = req.params;
 
-         if (!imageData) {
+         if (!id) {
             return errorRes(res);
          }
 
-         fs.rmSync(imageData.image_file_path, {
-            force: true,
-         });
-
-         await models.Image.destroy({ where: { image_file_path: imageData.image_file_path } });
+         await cloudinary.uploader.destroy(id);
+         await models.Image.destroy({ where: { public_id: id } });
 
          res.status(201).json({
             status: "successful",

@@ -4,13 +4,15 @@
    "description": "",
    "main": "main.js",
    "scripts": {
-      "start": "nodemon main.js",
+      "start": "node main.js",
+      "start:watch": "nodemon main.js",
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "author": "",
    "license": "ISC",
    "dependencies": {
       "bcrypt": "^5.1.0",
+      "cloudinary": "^1.41.1",
       "cookie-parser": "^1.4.6",
       "cors": "^2.8.5",
       "dotenv": "^16.3.1",

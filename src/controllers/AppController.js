@@ -1,13 +1,13 @@
 const models = require("../models");
 
-function errorRes(res) {
-   return res.status(402).json({ status: "error", message: "missing payload" });
+function errorRes(res, msg) {
+   return res.status(402).json({ status: "error", message: msg || "missing payload" });
 }
 
 class AppController {
    async getAllCategory(req, res, next) {
       try {
-         const categories = await models.Category.findAll({});
+         const categories = await models.Category.findAll({ where: { default: null } });
          res.json(categories);
       } catch (error) {
          console.log(error);

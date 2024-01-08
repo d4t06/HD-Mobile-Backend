@@ -102,7 +102,7 @@ class CUDProductController {
          });
       } catch (error) {
          console.log(error);
-         res.json({
+         res.status(500).json({
             status: "fail",
             message: "insert error",
          });

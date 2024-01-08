@@ -17,19 +17,20 @@ const handleRefreshToken = async (req, res) => {
    jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decode) => {
       if (err || user.username !== decode.username) return res.sendStatus(403);
 
-      const role_code = decode.role_code
-      const token = jwt.sign(
+      const { username, role } = decode;
+
+      const newToken = jwt.sign(
          {
-            username: decode.username,
-            role_code: role_code,
+            username,
+            role,
          },
          process.env.JWT_SECRET,
          {
-            expiresIn: "10s",
+            expiresIn: "1d",
          }
       );
 
-      res.json({token, role_code});
+      res.json({ token: newToken, role });
    });
 };
 

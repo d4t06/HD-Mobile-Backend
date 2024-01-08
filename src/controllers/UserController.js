@@ -5,17 +5,8 @@ class UserController {
          const user = await db.User.findAll({
             // where: { id: userInfo.id },
             attributes: {
-               exclude: ["password", "role_code"],
+               exclude: ["password"],
             },
-            // include: [
-            //    {
-            //       model: db.Role,
-            //       as: "role_data",
-            //       attributes: {
-            //          exclude: ["createdAt", "updatedAt"],
-            //       },
-            //    },
-            // ],
          });
          res.json(user);
       } catch (error) {

@@ -53,6 +53,10 @@ class ProductsController {
                   },
                   as: "combines_data",
                },
+               {
+                  model: models.Category,
+                  as: 'category_data'
+               }
             ],
             attributes: {
                exclude: ["createdAt", "updatedAt"],
@@ -92,7 +96,7 @@ class ProductsController {
       const { id } = req.params;
 
       if (!id) {
-         return res.status(404).json({ message: "missing query" });
+         return res.status(404).json({ message: "missing params" });
       }
 
       try {
@@ -128,7 +132,6 @@ class ProductsController {
                         as: "slider_data",
                         include: {
                            model: models.Slider_Image,
-                           // attributes: ["image_url"],
                            as: "images",
                         },
                      },
@@ -164,43 +167,7 @@ class ProductsController {
       }
    }
 
-   async search(req, res) {
-      const { q, page = 1, brand_name = [] } = req.query;
-      if (!q.trim()) return res.status(500).json("missing query");
 
-      console.log(">>> check query, ", { q });
-
-      const { enable, type, column } = res.locals.sort;
-      let order = [];
-      let where = {
-         name: {
-            [Op.like]: `${q}%`,
-         },
-      };
-      if (brand_name.length) where["brand_name"] = brand_name;
-
-      if (enable) {
-         if (column === "installment") {
-            where["installment"] = 1;
-         } else {
-            order = [[column, type]];
-         }
-      }
-
-      try {
-         const { rows, count } = await models.Product.findAndCountAll({
-            offset: (+page - 1) * PAGE_SIZE,
-            limit: PAGE_SIZE,
-            where,
-            order,
-         });
-
-         res.json({ count, products: rows, page_size: PAGE_SIZE });
-      } catch (error) {
-         console.log(error);
-         res.status(500).json("loi server");
-      }
-   }
    async buy(req, res, next) {
       const { body } = req.body;
       console.log(body);

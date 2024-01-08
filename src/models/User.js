@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
        */
       static associate(models) {
          // hasone target is define in a
-         User.hasOne(models.Role, {
-            sourceKey: "role",
-            foreignKey: 'value',
-            as: "role_data",
-         });
+         // User.hasOne(models.Role, {
+         //    sourceKey: "role_id",
+         //    foreignKey: 'id',
+         //    as: "role_data",
+         // });
       }
    }
    User.init(

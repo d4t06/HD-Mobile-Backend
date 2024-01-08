@@ -21,15 +21,7 @@ class AuthController {
             attributes: {
                exclude: ["createdAt", "updatedAt"],
             },
-            include: [
-               {
-                  model: db.Role,
-                  as: "role_data",
-                  attributes: {
-                     exclude: ["createdAt", "updatedAt"],
-                  },
-               },
-            ],
+
             // raw: true, => then res = 'role_data.id' not role_data: {id: }
          });
 
@@ -37,14 +29,10 @@ class AuthController {
          const isCorrectPassword = await bcrypt.compare(password, user.password);
 
          if (isCorrectPassword) {
-            const {
-               role_data: { code },
-            } = user;
-
             const token = jwt.sign(
                {
                   username,
-                  role_code: code,
+                  role: user.role ?? "",
                },
                process.env.JWT_SECRET,
                {
@@ -55,7 +43,7 @@ class AuthController {
             const refreshToken = jwt.sign(
                {
                   username,
-                  role_code: code,
+                  role: user.role ?? "",
                },
                process.env.JWT_SECRET,
                {
@@ -70,8 +58,8 @@ class AuthController {
                maxAge: 24 * 60 * 60 * 1000,
             });
             res.json({
-               role_code: code,
-               token: token,
+               role: user.role ?? "",
+               token,
             });
          } else {
             res.sendStatus(401);

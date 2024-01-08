@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
    Image.init(
       {
          image_url: DataTypes.STRING,
-         image_file_path: DataTypes.STRING,
+         public_id: DataTypes.STRING,
          name: DataTypes.STRING,
          size: DataTypes.INTEGER,
          link_to: DataTypes.STRING,
