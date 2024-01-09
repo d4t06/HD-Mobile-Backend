@@ -29,6 +29,10 @@ const route = function (app) {
 
    app.use("/api/search", searchRouter);
 
+   app.use("/api/slider-management", cudSliderRouter);
+
+   app.use("/api/product-management", cudProductRouter);
+
    app.use(tokenMiddleware);
    app.use(roleMiddleware.isAdmin);
 
@@ -36,15 +40,11 @@ const route = function (app) {
 
    app.use("/api/users", userRouter);
 
-   app.use("/api/product-management", cudProductRouter);
-
    app.use("/api/storage-management", cudStorageRouter);
 
    app.use("/api/color-management", cudColorRouter);
 
    app.use("/api/combine-management", cudCombineRouter);
-
-   app.use("/api/slider-management", cudSliderRouter);
 
    app.use("/", (res, req) => {
       req.status(404).json("Resource not found");

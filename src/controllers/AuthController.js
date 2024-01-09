@@ -18,9 +18,6 @@ class AuthController {
             where: {
                username: username,
             },
-            attributes: {
-               exclude: ["createdAt", "updatedAt"],
-            },
 
             // raw: true, => then res = 'role_data.id' not role_data: {id: }
          });

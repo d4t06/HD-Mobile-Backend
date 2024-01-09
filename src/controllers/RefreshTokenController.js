@@ -12,6 +12,8 @@ const handleRefreshToken = async (req, res) => {
       where: { refresh_token: refreshToken },
    });
 
+   // console.log("check user", user);
+
    if (!user) return res.sendStatus(403); //forbidden
 
    jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decode) => {

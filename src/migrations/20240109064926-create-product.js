@@ -15,12 +15,14 @@ module.exports = {
          },
          brand_id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: true,
+            onDelete: 'SET NULL',
             references: { model: "Brands", key: "id" },
          },
          category_id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: true,
+            onDelete: 'SET NULL',
             references: { model: "Categories", key: "id" },
          },
          product_name: {
@@ -35,11 +37,14 @@ module.exports = {
          createdAt: {
             allowNull: false,
             type: Sequelize.DATE,
+            defaultValue: Sequelize.fn("NOW"),
+
          },
          updatedAt: {
             allowNull: false,
             type: Sequelize.DATE,
-            defaultValue: DataTypes.NOW
+            defaultValue: Sequelize.fn("NOW"),
+
          },
       });
    },

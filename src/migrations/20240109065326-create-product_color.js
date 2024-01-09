@@ -11,6 +11,8 @@ module.exports = {
          product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
             references: {
                model: "Products",
                key: "product_name_ascii",
@@ -27,13 +29,6 @@ module.exports = {
          default: {
             allowNull: false,
             type: Sequelize.BOOLEAN,
-         },
-         slider_id: {
-            type: Sequelize.INTEGER,
-            references: {
-               model: "Sliders",
-               key: "id",
-            },
          },
       });
    },

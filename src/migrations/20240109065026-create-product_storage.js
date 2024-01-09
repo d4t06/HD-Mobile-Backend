@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    async up(queryInterface, Sequelize) {
-      await queryInterface.createTable("Product_Combines", {
+      await queryInterface.createTable("Product_Storages", {
          id: {
             autoIncrement: true,
             primaryKey: true,
@@ -11,32 +11,22 @@ module.exports = {
          product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
             references: {
                model: "Products",
                key: "product_name_ascii",
             },
          },
-         color_id: {
+         storage_ascii: {
+            type: Sequelize.STRING,
             allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-               model: "Product_Colors",
-               key: "id",
-            },
          },
-         storage_id: {
+         storage: {
             allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-               model: "Product_Storages",
-               key: "id",
-            },
+            type: Sequelize.STRING,
          },
-         price: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-         },
-         quantity: {
+         base_price: {
             allowNull: false,
             type: Sequelize.INTEGER,
          },
@@ -46,6 +36,6 @@ module.exports = {
       });
    },
    async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable("Product_Combines");
+      await queryInterface.dropTable("Product_Storages");
    },
 };

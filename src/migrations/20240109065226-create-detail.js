@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    async up(queryInterface, Sequelize) {
-      await queryInterface.createTable("Product_Storages", {
+      await queryInterface.createTable("Details", {
          id: {
             autoIncrement: true,
             primaryKey: true,
@@ -11,29 +11,27 @@ module.exports = {
          product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
             references: {
                model: "Products",
-               key: "product_name_ascii",
+               key: 'product_name_ascii'
             },
          },
-         storage_ascii: {
-            type: Sequelize.STRING,
-            allowNull: false,
+         desc : {
+            type: Sequelize.TEXT
          },
-         storage: {
+         createdAt: {
             allowNull: false,
-            type: Sequelize.STRING,
+            type: Sequelize.DATE,
          },
-         base_price: {
+         updatedAt: {
             allowNull: false,
-            type: Sequelize.INTEGER,
-         },
-         default: {
-            type: Sequelize.BOOLEAN,
+            type: Sequelize.DATE,
          },
       });
    },
    async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable("Product_Storages");
+      await queryInterface.dropTable("Details");
    },
 };

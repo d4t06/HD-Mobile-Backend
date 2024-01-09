@@ -75,7 +75,7 @@ class CUDSliderController {
          });
       }
    }
-   
+
    async getAllCategorySlider(req, res, next) {
       try {
          const slider = await models.Category_Slider.findAll({
@@ -106,7 +106,7 @@ class CUDSliderController {
       try {
          const { category_ascii } = req.params;
 
-         console.log("check category_ascii", category_ascii);
+         console.log("get category slider check category_ascii", category_ascii);
 
          if (!category_ascii) return errorRes(res, "Invalid category");
 
@@ -153,6 +153,23 @@ class CUDSliderController {
             status: "error",
             message: "insert slider error",
          });
+      }
+   }
+
+   async deleteSlider(req, res) {
+      try {
+         const { id } = req.params;
+         if (!id) return missPayloadError(res);
+
+         await models.Slider.destroy({ where: { id } });
+
+         res.status(201).json({
+            status: "successful",
+            message: "delete slider successful",
+         });
+      } catch (error) {
+         console.log(error);
+         res.status(501).json({ status: "error", message: "delete slider successful" });
       }
    }
 
