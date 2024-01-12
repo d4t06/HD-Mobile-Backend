@@ -9,16 +9,13 @@ module.exports = (sequelize, DataTypes) => {
    Detail.init(
       {
          product_name_ascii: DataTypes.STRING,
-         // images: DataTypes.TEXT,
-         desc: DataTypes.TEXT,
+         content: DataTypes.TEXT,
       },
       {
          sequelize,
-         // modelName: "Detail",
+         timestamps: false,
       }
    );
-
-   // Detail.belongsTo(Product);
 
    return Detail;
 };

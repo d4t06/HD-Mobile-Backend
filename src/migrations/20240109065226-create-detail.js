@@ -11,23 +11,15 @@ module.exports = {
          product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE',
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
             references: {
                model: "Products",
-               key: 'product_name_ascii'
+               key: "product_name_ascii",
             },
          },
-         desc : {
-            type: Sequelize.TEXT
-         },
-         createdAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
-         },
-         updatedAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
+         content: {
+            type: Sequelize.TEXT,
          },
       });
    },

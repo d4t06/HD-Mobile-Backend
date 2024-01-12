@@ -7,7 +7,7 @@ function errorRes(res, msg) {
 class AppController {
    async getAllCategory(req, res, next) {
       try {
-         const categories = await models.Category.findAll({ where: { default: null } });
+         const categories = await models.Category.findAll({});
          res.json(categories);
       } catch (error) {
          console.log(error);

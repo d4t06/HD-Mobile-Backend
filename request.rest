@@ -13,11 +13,10 @@ GET http://localhost:3000/api/products/dien-thoai
 GET http://localhost:3000/api/products/dien_thoai?page=1&column=price&type=desc
 
 ###
-GET http://localhost:3000/api/product-management/iphone-15-pro-max
+GET http://localhost:3000/api/product-management/products/iphone-15-pro-max
 
 ###
-GET http://localhost:3000/api/product-management/dien-thoai
-
+GET http://localhost:3000/api/product-management/products
 ###
 GET http://localhost:3000/api/search?q=iPhone&brand_id[]=12&column=price&type=sdfsdf
 
