@@ -11,6 +11,7 @@ const cudCombineRouter = require("./cudCombine");
 const cudSliderRouter = require("./cudSlider");
 const productAttributeRouter = require('./productAttribute')
 const productDetailRouter = require('./productDetail')
+const productCommentRouter = require('./productComment')
 
 const appRouter = require("./app");
 const imageRouter = require("./image");
@@ -34,6 +35,8 @@ const route = function (app) {
    app.use("/api/slider-management", cudSliderRouter);
 
    app.use("/api/product-management", cudProductRouter);
+
+   app.use("/api/product-comment-management", productCommentRouter);
 
    app.use(tokenMiddleware);
    app.use(roleMiddleware.isAdmin);

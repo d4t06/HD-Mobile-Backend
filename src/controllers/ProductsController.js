@@ -57,20 +57,20 @@ class ProductsController {
             model: models.Category,
             as: "category_data",
           },
-         //  {
-         //    model: models.Product_Attribute,
-         //    attributes: ["value"],
-         //    as: "attributes_data",
-         //    include: {
-         //      model: models.Category_Attribute,
-         //      attributes: ["attribute"],
-         //      as: "attribute_data",
-         //    },
-         //  },
+          //  {
+          //    model: models.Product_Attribute,
+          //    attributes: ["value"],
+          //    as: "attributes_data",
+          //    include: {
+          //      model: models.Category_Attribute,
+          //      attributes: ["attribute"],
+          //      as: "attribute_data",
+          //    },
+          //  },
         ],
-      //   attributes: {
-      //     exclude: ["createdAt", "updatedAt"],
-      //   },
+        //   attributes: {
+        //     exclude: ["createdAt", "updatedAt"],
+        //   },
         where,
         order,
       });
@@ -114,9 +114,9 @@ class ProductsController {
         where: {
           product_name_ascii: id,
         },
-      //   attributes: {
-      //     exclude: ["createdAt", "updatedAt"],
-      //   },
+        //   attributes: {
+        //     exclude: ["createdAt", "updatedAt"],
+        //   },
         include: [
           {
             model: models.Product_Detail,
@@ -172,9 +172,17 @@ class ProductsController {
             model: models.Product_Attribute,
             as: "attributes_data",
             include: {
-                model: models.Category_Attribute,
-                as: "attribute_data"
-              }
+              model: models.Category_Attribute,
+              as: "attribute_data",
+            },
+          },
+          {
+            model: models.Question,
+            as: "comments_data",
+            include: {
+              model: models.Answer,
+              as: "reply_data",
+            },
           },
         ],
       });

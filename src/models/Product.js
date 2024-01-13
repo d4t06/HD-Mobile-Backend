@@ -54,6 +54,12 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "product_name_ascii",
             as: "attributes_data",
          });
+
+         Product.hasMany(models.Question, {
+            sourceKey: "product_name_ascii",
+            foreignKey: "product_name_ascii",
+            as: "comments_data",
+         });
       }
    }
 

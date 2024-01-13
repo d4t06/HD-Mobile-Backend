@@ -19,11 +19,19 @@ module.exports = {
           key: "product_name_ascii",
         },
       },
-      cus_name: {
-        type: Sequelize.STRING,
+      q_id: {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Questions",
+          key: "id",
+        },
       },
       total_like: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       content: {
         type: Sequelize.TEXT,
