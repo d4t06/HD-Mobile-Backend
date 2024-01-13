@@ -20,6 +20,15 @@ module.exports = {
       },
       attribute: {
         type: Sequelize.STRING,
+        allowNull: false,
+
+      },
+       attribute_ascii: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      order: {
+        type: Sequelize.INTEGER,
       },
     });
   },

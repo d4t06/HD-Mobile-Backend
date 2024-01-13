@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       category_id: DataTypes.INTEGER,
       attribute: DataTypes.STRING,
+      attribute_ascii: DataTypes.STRING,
+      order: DataTypes.INTEGER
     },
     {
       sequelize,

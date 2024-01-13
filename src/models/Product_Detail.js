@@ -2,11 +2,11 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-   class Detail extends Model {
+   class Product_Detail extends Model {
       static associate(models) {}
    }
 
-   Detail.init(
+   Product_Detail.init(
       {
          product_name_ascii: DataTypes.STRING,
          content: DataTypes.TEXT,
@@ -17,5 +17,5 @@ module.exports = (sequelize, DataTypes) => {
       }
    );
 
-   return Detail;
+   return Product_Detail;
 };

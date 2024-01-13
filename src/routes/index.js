@@ -9,6 +9,8 @@ const cudStorageRouter = require("./cudStorage");
 const cudColorRouter = require("./cudColor");
 const cudCombineRouter = require("./cudCombine");
 const cudSliderRouter = require("./cudSlider");
+const productAttributeRouter = require('./productAttribute')
+const productDetailRouter = require('./productDetail')
 
 const appRouter = require("./app");
 const imageRouter = require("./image");
@@ -45,6 +47,10 @@ const route = function (app) {
    app.use("/api/color-management", cudColorRouter);
 
    app.use("/api/combine-management", cudCombineRouter);
+
+   app.use('/api/product-attribute-management', productAttributeRouter)
+
+   app.use('/api/product-detail-management', productDetailRouter)
 
    app.use("/", (res, req) => {
       req.status(404).json("Resource not found");

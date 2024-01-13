@@ -67,6 +67,79 @@ class AppController {
     }
   }
 
+   async getCategoryAttributes(req, res) {
+    try {
+      const { id } = req.params;
+      if (id === undefined) return errorRes(res);
+
+      const data = await models.Category_Attribute.findAll({ where: { category_id: id } });
+
+      res.status(200).json({
+        status: "successful",
+        message: "get all category attribute successful",
+        data
+      });
+
+    } catch (error) {
+      console.log(error);
+      res.status(501).json({ status: "fail", message: error });
+    }
+  }
+
+
+
+
+  async addAttribute(req, res) {
+    try {
+      const attr = req.body;
+      if (!attr) {
+        return errorRes(res)
+      }
+
+      const newAttr = await models.Category_Attribute.create(attr);
+
+      res.json({
+        status: 'successful',
+        message: 'add category attribute successful',
+        data: newAttr
+      });
+
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  async updateAttribute(req, res) {
+    try {
+      const attr = req.body;
+      if (!attr || attr.id === undefined) return errorRes(res)
+      
+
+      await models.Category_Attribute.update(attr, { where: { id: attr.id } });
+      res.json({ message: "update category attribute successful" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  async deleteAttribute(req, res) {
+    const { id } = req.params;
+    if (id === undefine) return errorRes(res);
+
+    try {
+      await models.Category_Attribute.destroy({ where: { id: id } });
+      res.status(201).json({
+        status: "successful",
+        message: "delete category attribute successful",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(501).json({ status: "fail", message: error });
+    }
+  }
+
+
+
   async getAllBrand(req, res, next) {
     try {
       const { category_id } = req.query;

@@ -118,13 +118,13 @@ class ProductsController {
       //     exclude: ["createdAt", "updatedAt"],
       //   },
         include: [
-         //  {
-         //    model: models.Detail,
-         //    as: "detail",
-         //    attributes: {
-         //      exclude: ["createdAt", "updatedAt"],
-         //    },
-         //  },
+          {
+            model: models.Product_Detail,
+            as: "detail",
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
           {
             model: models.Product_Storage,
             as: "storages_data",
@@ -167,6 +167,14 @@ class ProductsController {
                 attributes: ["storage", "storage_ascii"],
               },
             ],
+          },
+          {
+            model: models.Product_Attribute,
+            as: "attributes_data",
+            include: {
+                model: models.Category_Attribute,
+                as: "attribute_data"
+              }
           },
         ],
       });

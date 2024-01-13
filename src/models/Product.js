@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       static associate(models) {
          // define association here
          // default use 'DetailId' filed
-         Product.hasOne(models.Detail, {
+         Product.hasOne(models.Product_Detail, {
             sourceKey: "product_name_ascii",
             foreignKey: "product_name_ascii",
             as: "detail",
@@ -47,6 +47,12 @@ module.exports = (sequelize, DataTypes) => {
             sourceKey: "product_name_ascii",
             foreignKey: "product_name_ascii",
             as: "sliders_data",
+         });
+
+         Product.hasMany(models.Product_Attribute, {
+            sourceKey: "product_name_ascii",
+            foreignKey: "product_name_ascii",
+            as: "attributes_data",
          });
       }
    }
