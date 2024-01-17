@@ -6,7 +6,7 @@ const errorRes = (res, msg) => {
    res.status(402).json({ status: "finish", message: msg || "missing payload" });
 };
 
-class CUDProductController {
+class ProductController {
    async getAll(req, res) {
       const { page = 1, price, brand_id, category_id } = req.query;
 
@@ -150,4 +150,4 @@ class CUDProductController {
    }
 }
 
-module.exports = new CUDProductController();
+module.exports = new ProductController();

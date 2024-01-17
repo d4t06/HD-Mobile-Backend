@@ -3,17 +3,17 @@
 const express = require("express");
 const router = express.Router();
 // controller
-const productsController = require("../controllers/ProductsController");
+const ProductController = require("../controllers/ProductController");
 
 // const paginationMiddleware = require("../middleWares/paginationMiddleware");
 const sortMiddleware = require("../middleWares/sortMiddleware");
 
-router.get("/:id", productsController.getDetail);
+router.get("/:id", ProductController.getDetail);
 
 router.use(sortMiddleware);
-router.get("/", productsController.getProducts);
+router.get("/", ProductController.getProducts);
 
-// router.get("/search", productsController.search);
+// router.get("/search", ProductController.search);
 // router.use(paginationMiddleware);
 
 module.exports = router;

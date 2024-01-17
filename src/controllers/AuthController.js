@@ -66,7 +66,7 @@ class AuthController {
       }
    }
    async handleRegister(req, res, next) {
-      const { username, password } = req.body;
+      const { username, password, role } = req.body;
 
       if (!username || !password) {
          res.status(400).json("missing username or password");
@@ -86,7 +86,8 @@ class AuthController {
          const hashPassword = await bcrypt.hash(password, salt);
          await db.User.create({
             password: hashPassword,
-            username: username,
+            username,
+            role,
          });
          res.status(201).json("new user created");
       } catch (error) {

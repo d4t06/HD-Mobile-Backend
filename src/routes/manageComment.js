@@ -4,14 +4,13 @@ const express = require("express");
 const router = express.Router();
 
 const ProductCommentController = require("../controllers/ProductCommentController");
-const tokenMiddleware = require("../middleWares/tokenMiddleware");
-const roleMiddleware = require("../middleWares/roleMiddleware");
 
-router.post("/comments", ProductCommentController.addComment);
+router.get("/comments", ProductCommentController.getAllComments);
 
-router.use(tokenMiddleware);
-router.use(roleMiddleware.isAdmin);
+router.delete("/comments/:id", ProductCommentController.delete);
 
 router.post("/replies", ProductCommentController.addReply);
+
+router.put("/replies/:id", ProductCommentController.editReply);
 
 module.exports = router;

@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     product_name_ascii: DataTypes.STRING,
     content: DataTypes.STRING,
     total_like: DataTypes.INTEGER,
+    date_convert: DataTypes.STRING
   }, {
     sequelize,
   });

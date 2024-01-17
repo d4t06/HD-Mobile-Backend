@@ -20,8 +20,12 @@ module.exports = {
          icon: {
             type: Sequelize.STRING,
          },
-         default: {
-            type: Sequelize.BOOLEAN,
+         hidden: {
+            type: Sequelize.INTEGER,
+            validate: {
+               isIn: [[0, 1]],
+            },
+            defaultValue: 0,
          },
       });
    },

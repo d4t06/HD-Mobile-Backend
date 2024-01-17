@@ -38,11 +38,17 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("NOW"),
+        // defaultValue: Sequelize.fn("NOW"),
+        defaultValue: Sequelize.NOW
+      },
+      date_convert: {
+        type: Sequelize.STRING,
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("NOW"),
+        // defaultValue: Sequelize.fn("NOW"),
+        defaultValue: Sequelize.NOW
+
       },
     });
   },

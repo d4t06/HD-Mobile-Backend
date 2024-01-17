@@ -9,7 +9,7 @@ class AppController {
   async getAllCategory(req, res, next) {
     try {
       const categories = await models.Category.findAll({
-        where: { default: { [Op.is]: null } },
+        where: { hidden: 0  },
         include: {
           model: models.Category_Attribute,
           as: "attributes",

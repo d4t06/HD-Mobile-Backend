@@ -14,5 +14,22 @@ const generateId = (name) => {
    return convertToEn(name).replaceAll(/[\W_]/g, "-");
 };
 
+const convertDate = (dateString) => {
+   const mysqlDate = new Date(dateString);
+   const currentDate = new Date();
 
-module.exports = {generateId}
+   const daysDiff = (currentDate - mysqlDate) / (1000 * 60 * 60 * 24);
+   // if rather than a month
+   if (daysDiff > 30) return mysqlDate.toLocaleDateString("en-gb");
+
+   // if less than a month
+   if (daysDiff < 1) {
+      const timeDiff = Math.floor(daysDiff * 24);
+      if (timeDiff === 0) return `Less than a hour`;
+      return `${timeDiff} hours ago`;
+   }
+
+   return `${Math.floor(daysDiff)} days ago`;
+};
+
+module.exports = { generateId, convertDate };

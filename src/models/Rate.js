@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Rate.hasOne(models.Product, {
+        sourceKey: "product_name_ascii",
+        foreignKey: "product_name_ascii",
+        as: "product_data",
+     });
     }
   }
   Rate.init({
@@ -19,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING,
     rate: DataTypes.NUMBER,
     phone_number: DataTypes.STRING,
+    total_like: DataTypes.STRING,
     approve: DataTypes.NUMBER,
+    date_convert: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Rate',

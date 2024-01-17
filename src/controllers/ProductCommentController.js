@@ -1,57 +1,243 @@
+const { Op } = require("sequelize");
 const models = require("../models");
+const { convertDate } = require("../utils/appHelper");
 
-const missPayloadError = (res, message = "missing payload") => {
-  return res.status(402).json({ status: "finish", message });
+const errorRes = (res, message = "missing payload") => {
+   return res.status(402).json({ status: "error", message });
 };
 
+const PAGE_SIZE = +process.env.PAGE_SIZE || 6;
+
 class ProductCommentController {
-  async addComment(req, res) {
-    try {
-      if (!req.body) {
-        return missPayloadError(res);
+   // for admin
+   async getAllComments(req, res) {
+      try {
+         const { page = 1 } = req.query;
+         const { rows, count } = await models.Question.findAndCountAll({
+            offset: (+page - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
+            include: {
+               model: models.Answer,
+               as: "reply_data",
+            },
+            order: [["createdAt", "DESC"]],
+         });
+
+         if (rows.length) {
+            rows.forEach((item) => {
+               item["date_convert"] = convertDate(item.createdAt);
+               const reply = item.reply_data;
+               if (reply) {
+                  item.reply_data["date_convert"] = convertDate(reply.createdAt);
+               }
+            });
+         }
+
+         return res.json({
+            product_name_ascii: "",
+            page: +page,
+            comments: rows,
+            count,
+            page_size: PAGE_SIZE,
+         });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({ message: error });
       }
+   }
 
-      const data = req.body;
+   // for admin
+   async getProductComments(req, res) {
+      try {
+         const { id } = req.params;
+         const { page = 1 } = req.query;
 
-      if (!data.content || !data.cus_name) {
-        return missPayloadError(res, "comment data error");
+         if (id === undefined) return errorRes(res, "bad request");
+
+         const comments = await models.Question.findAll({
+            offset: (+page - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
+            where: {
+               product_name_ascii: id,
+            },
+            include: {
+               model: models.Answer,
+               as: "reply_data",
+            },
+         });
+
+         if (comments.length) {
+            comments.forEach((item) => {
+               item["approve"] = convertDate(item.createdAt);
+               const reply = item.reply_data;
+               if (reply) {
+                  item.reply_data["date_convert"] = convertDate(reply.createdAt);
+               }
+            });
+         }
+
+         return res.json({
+            product_name_ascii: id,
+            page: +page,
+            comments,
+         });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({ message: error });
       }
+   }
 
-      await models.Question.create(data);
+   async getProductCommentsClient(req, res) {
+      try {
+         const { id } = req.params;
 
-      res.status(201).json({ status: "successful", message: "comment successful" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        status: "error",
-        message: "add comment error",
-      });
-    }
-  }
+         const { page = 1 } = req.query;
 
-  async addReply(req, res) {
-    try {
-      if (!req.body) {
-        return missPayloadError(res);
+         const comments = await models.Question.findAll({
+            offset: (+page - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
+            include: {
+               model: models.Answer,
+               as: "reply_data",
+               where: {
+                  q_id: { [Op.not]: null },
+               },
+            },
+            where: { product_name_ascii: id },
+         });
+
+         if (comments.length) {
+            comments.forEach((item) => {
+               item["approve"] = convertDate(item.createdAt);
+               const reply = item.reply_data;
+               if (reply) {
+                  item.reply_data["date_convert"] = convertDate(reply.createdAt);
+               }
+            });
+         }
+
+         return res.json({
+            product_name_ascii: id,
+            page: +page,
+            comments,
+         });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({ message: error });
       }
+   }
 
-      const data = req.body;
+   async addComment(req, res) {
+      try {
+         if (!req.body) {
+            return errorRes(res);
+         }
 
-      if (!data.q_id || !data.content) {
-        return missPayloadError(res, "reply data error");
+         const data = req.body;
+
+         if (!data.content || !data.cus_name) {
+            return errorRes(res, "comment data error");
+         }
+
+         await models.Question.create(data);
+
+         res.status(201).json({ status: "successful", message: "comment successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "add comment error",
+         });
       }
+   }
 
-      await models.Answer.create(data);
+   async likeComment(req, res) {
+      try {
+         if (!req.body) return errorRes(res);
 
-      res.status(201).json({ status: "successful", message: "reply successful" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        status: "error",
-        message: "reply error",
-      });
-    }
-  }
+         // type: "QUESTION" | "ANSWER"
+         const { id, type } = req.body;
+         if (id == undefined || type === undefined) return errorRes(res, "reply data error");
+
+         if (type === "ANSWER") {
+            const founder = await models.Answer.findOne({ where: { id } });
+
+            console.log("check answer", founder);
+            if (!founder) return errorRes(res, "Not found answer");
+
+            await models.Answer.update({ total_like: founder.total_like + 1 }, { where: { id } });
+            return res.status(201).json({ status: "successful", message: "reply successful" });
+         }
+
+         const founder = await models.Question.findOne({ where: { id } });
+         if (!founder) return errorRes(res, "Not found comment");
+
+         await models.Question.update({ total_like: founder.total_like + 1 }, { where: { id } });
+         res.status(201).json({ status: "successful", message: "reply successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "reply error",
+         });
+      }
+   }
+
+   async delete(req, res) {
+      try {
+         const { id } = req.params;
+
+         await models.Question.destroy({ where: { id } });
+
+         res.status(201).json({ status: "successful", message: "delete comment successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "delete comment error",
+         });
+      }
+   }
+
+   async addReply(req, res) {
+      try {
+         if (!req.body) return errorRes(res);
+
+         const data = req.body;
+         if (!data.q_id || !data.content) return errorRes(res, "reply data error");
+
+         const newReply = await models.Answer.create(data);
+
+         res.status(201).json({ status: "successful", message: "reply successful", data: newReply });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "reply error",
+         });
+      }
+   }
+
+   async editReply(req, res) {
+      try {
+         const { id } = req.params;
+         if (!req.body || !id) return errorRes(res);
+
+         const { content } = req.body;
+
+         if (!content) return errorRes(res, "reply data error");
+
+         await models.Answer.update({ content }, { where: { id } });
+
+         res.status(201).json({ status: "successful", message: "update reply successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "update reply error",
+         });
+      }
+   }
 }
 
 module.exports = new ProductCommentController();
