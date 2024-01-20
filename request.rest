@@ -13,7 +13,7 @@ GET http://localhost:3000/api/products/dien-thoai
 GET http://localhost:3000/api/products/dien_thoai?page=1&column=price&type=desc
 
 ###
-GET http://localhost:3000/api/product-management/products/iphone-15-pro-max
+GET http://localhost:3000/api/product-management/products/iphone-14-pro-max
 
 ###
 GET http://localhost:3000/api/product-management/products
@@ -46,10 +46,9 @@ POST http://localhost:3000/api/auth/register
 content-Type: application/json
 
 {
-    "username": "admin",
-    "password": "admin",
-    "role_id": "",
-    "refresh_token": ""
+    "username": "admin123",
+    "password": "admin123",
+    "role:" :"ADMIN"
 }
 ###
 

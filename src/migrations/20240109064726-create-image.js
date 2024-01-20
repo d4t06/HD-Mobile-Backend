@@ -28,7 +28,7 @@ module.exports = {
             allowNull: false,
             type: Sequelize.DATE,
             // defaultValue: Sequelize.fn("NOW"),
-            defaultValue: Sequelize.NOW
+            defaultValue: Sequelize.fn("NOW")
          },
       });
    },

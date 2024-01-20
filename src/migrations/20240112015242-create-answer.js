@@ -39,7 +39,7 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         // defaultValue: Sequelize.fn("NOW"),
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn("NOW")
       },
       date_convert: {
         type: Sequelize.STRING,
@@ -47,7 +47,7 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
         // defaultValue: Sequelize.fn("NOW"),
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn("NOW")
 
       },
     });

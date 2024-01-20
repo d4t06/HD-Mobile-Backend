@@ -93,7 +93,7 @@ class ProductCommentController {
 
          const { page = 1 } = req.query;
 
-         const comments = await models.Question.findAll({
+         const { rows, count } = await models.Question.findAndCountAll({
             offset: (+page - 1) * PAGE_SIZE,
             limit: PAGE_SIZE,
             include: {
@@ -106,8 +106,8 @@ class ProductCommentController {
             where: { product_name_ascii: id },
          });
 
-         if (comments.length) {
-            comments.forEach((item) => {
+         if (rows.length) {
+            rows.forEach((item) => {
                item["approve"] = convertDate(item.createdAt);
                const reply = item.reply_data;
                if (reply) {
@@ -119,7 +119,9 @@ class ProductCommentController {
          return res.json({
             product_name_ascii: id,
             page: +page,
-            comments,
+            comments: rows,
+            page_size: PAGE_SIZE,
+            count,
          });
       } catch (error) {
          console.log(error);
@@ -156,18 +158,18 @@ class ProductCommentController {
          if (!req.body) return errorRes(res);
 
          // type: "QUESTION" | "ANSWER"
-         const { id, type } = req.body;
-         if (id == undefined || type === undefined) return errorRes(res, "reply data error");
+         const { id } = req.body;
+         if (id == undefined) return errorRes(res, "like data error");
 
-         if (type === "ANSWER") {
-            const founder = await models.Answer.findOne({ where: { id } });
+         // if (type === "ANSWER") {
+         //    const founder = await models.Answer.findOne({ where: { id } });
 
-            console.log("check answer", founder);
-            if (!founder) return errorRes(res, "Not found answer");
+         //    console.log("check answer", founder);
+         //    if (!founder) return errorRes(res, "Not found answer");
 
-            await models.Answer.update({ total_like: founder.total_like + 1 }, { where: { id } });
-            return res.status(201).json({ status: "successful", message: "reply successful" });
-         }
+         //    await models.Answer.update({ total_like: founder.total_like + 1 }, { where: { id } });
+         //    return res.status(201).json({ status: "successful", message: "like successful" });
+         // }
 
          const founder = await models.Question.findOne({ where: { id } });
          if (!founder) return errorRes(res, "Not found comment");
@@ -178,7 +180,28 @@ class ProductCommentController {
          console.log(error);
          res.status(500).json({
             status: "error",
-            message: "reply error",
+            message: "like error",
+         });
+      }
+   }
+
+   async unLikeComment(req, res) {
+      try {
+         if (!req.body) return errorRes(res);
+
+         const { id } = req.body;
+         if (id == undefined) return errorRes(res, "reply data error");
+
+         const founder = await models.Question.findOne({ where: { id } });
+         if (!founder) return errorRes(res, "Not found question");
+
+         await models.Question.update({ total_like: founder.total_like - 1 }, { where: { id } });
+         res.status(201).json({ status: "successful", message: "Unlike question successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "Unlike question error",
          });
       }
    }

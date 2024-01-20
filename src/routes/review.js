@@ -11,6 +11,8 @@ router.get("/avg/:id", ProductReviewController.getAverage);
 
 router.post("/like", ProductReviewController.like);
 
+router.post("/unlike", ProductReviewController.unLike);
+
 router.post("/", ProductReviewController.add);
 
 module.exports = router;

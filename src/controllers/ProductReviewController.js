@@ -233,7 +233,47 @@ class ProductReviewController {
       }
    }
 
-   async like(req, res) {}
+   async like(req, res) {
+      try {
+         if (!req.body) return errorRes(res);
+
+         const { id } = req.body;
+         if (id == undefined) return errorRes(res, "Review id is undefined");
+
+         const founder = await models.Rate.findOne({ where: { id } });
+         if (!founder) return errorRes(res, "Not found review");
+
+         await models.Rate.update({ total_like: founder.total_like + 1 }, { where: { id } });
+         res.status(201).json({ status: "successful", message: "Like review successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "Like review error",
+         });
+      }
+   }
+
+   async unLike(req, res) {
+      try {
+         if (!req.body) return errorRes(res);
+
+         const { id } = req.body;
+         if (id == undefined) return errorRes(res, "Review id is undefined");
+
+         const founder = await models.Rate.findOne({ where: { id } });
+         if (!founder) return errorRes(res, "Not found review");
+
+         await models.Rate.update({ total_like: founder.total_like - 1 }, { where: { id } });
+         res.status(201).json({ status: "successful", message: "Unlike review successful" });
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "Unlike review error",
+         });
+      }
+   }
 }
 
 module.exports = new ProductReviewController();

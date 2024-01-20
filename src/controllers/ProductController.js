@@ -6,7 +6,7 @@ const PAGE_SIZE = +process.env.PAGE_SIZE || 6;
 
 class ProductsController {
    async getProducts(req, res) {
-      const { page = 1, price, brand_id, category_id } = req.query;
+      const { page = 1, price, brand_id, category_id = 1 } = req.query;
 
       // handle price range
       let priceFilter;
@@ -58,20 +58,10 @@ class ProductsController {
                   model: models.Category,
                   as: "category_data",
                },
-               //  {
-               //    model: models.Product_Attribute,
-               //    attributes: ["value"],
-               //    as: "attributes_data",
-               //    include: {
-               //      model: models.Category_Attribute,
-               //      attributes: ["attribute"],
-               //      as: "attribute_data",
-               //    },
-               //  },
             ],
-            //   attributes: {
-            //     exclude: ["createdAt", "updatedAt"],
-            //   },
+            attributes: {
+               exclude: ["createdAt", "updatedAt"],
+            },
             where,
             order,
          });
@@ -79,11 +69,9 @@ class ProductsController {
          let variants_data = [];
          const productIds = rows.map((p) => p.product_name_ascii) || [];
 
-         console.log("check ids", productIds);
-
          if (productIds) {
             variants_data = await models.Product_Storage.findAll({
-               where: { product_name_ascii: { [Sequelize.Op.in]: productIds } },
+               where: { product_name_ascii: { [Sequelize.Op.in]: productIds }, base_price: { [Sequelize.Op.not]: 0 } },
             });
          }
 
@@ -138,6 +126,7 @@ class ProductsController {
                {
                   model: models.Product_Storage,
                   as: "storages_data",
+                  where: { base_price: { [Sequelize.Op.not]: 0 } },
                },
                {
                   model: models.Product_Color,
@@ -186,30 +175,8 @@ class ProductsController {
                      as: "attribute_data",
                   },
                },
-               {
-                  model: models.Question,
-                  as: "comments_data",
-                  where: {
-                     approve: { [Op.eq]: 1 },
-                  },
-                  required: false,
-                  include: {
-                     model: models.Answer,
-                     as: "reply_data",
-                  },
-               },
             ],
          });
-         if (product?.comments_data) {
-            product.comments_data.forEach((item) => {
-               item["approve"] = convertDate(item.createdAt);
-               const reply = item.reply_data;
-               if (reply) {
-                  item.reply_data[0]["createdAt"] = convertDate(reply[0].createdAt);
-               }
-               ``;
-            });
-         }
 
          res.json(product);
       } catch (err) {

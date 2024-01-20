@@ -11,7 +11,7 @@ module.exports = async function (req, res, next) {
    try {
       jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
 
-         console.log('decode = ', decode)
+         // console.log('decode = ', decode)
          if (err) return res.status(403).json("token expired");
          req.userInfo = decode; //id, username, role_code
 

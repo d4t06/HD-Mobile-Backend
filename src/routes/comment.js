@@ -9,6 +9,8 @@ router.get("/:id", ProductCommentController.getProductCommentsClient);
 
 router.post("/like", ProductCommentController.likeComment);
 
+router.post("/unlike", ProductCommentController.unLikeComment);
+
 router.post("/", ProductCommentController.addComment);
 
 module.exports = router;

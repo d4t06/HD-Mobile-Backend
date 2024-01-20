@@ -37,6 +37,7 @@ module.exports = {
             validate: {
                isIn: [[0, 1]],
             },
+            defaultValue: 0,
             allowNull: false,
          },
          date_convert: {
@@ -53,13 +54,13 @@ module.exports = {
             allowNull: false,
             type: Sequelize.DATE,
             // defaultValue: Sequelize.fn("NOW"),
-            defaultValue: Sequelize.NOW,
+            defaultValue: Sequelize.fn("NOW"),
          },
          updatedAt: {
             allowNull: false,
             type: Sequelize.DATE,
             // defaultValue: Sequelize.fn("NOW"),
-            defaultValue: Sequelize.NOW,
+            defaultValue: Sequelize.fn("NOW"),
          },
       });
    },
