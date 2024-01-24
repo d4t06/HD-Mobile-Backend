@@ -23,7 +23,7 @@ router.use(roleMiddleware.isAdmin);
 
 // *** /products
 router.post("/products", ManageProductController.addOne);
-router.put("/products", ManageProductController.updateOne);
+router.put("/products/:id", ManageProductController.updateOne);
 router.delete("/products/:id", ManageProductController.deleteOne);
 
 // ** /attributes

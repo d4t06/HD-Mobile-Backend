@@ -111,14 +111,15 @@ class ProductController {
 
    async updateOne(req, res) {
       try {
-         if (!req.body) {
+         const { id } = req.params;
+         if (!req.body || id === undefined) {
             return errorRes(res);
          }
 
          const productInfo = req.body;
-         if (!productInfo.id || !productInfo.category_id || !productInfo.brand_id) return errorRes(res);
+         if (!productInfo.category_id || !productInfo.brand_id) return errorRes(res);
 
-         await models.Product.update({ ...productInfo }, { where: { id: productInfo.id } });
+         await models.Product.update({ ...productInfo }, { where: { id: id } });
 
          res.status(201).json({
             status: "successful",
@@ -163,9 +164,12 @@ class ProductController {
             }
          });
 
-          await models.Product_Attribute.bulkCreate(data);
+         await models.Product_Attribute.bulkCreate(data);
 
-         res.status(201).json({status: "successful", message: 'add product attributes successful'});
+         res.status(201).json({
+            status: "successful",
+            message: "add product attributes successful",
+         });
       } catch (error) {
          console.log(error);
          res.status(500).json({
@@ -177,18 +181,16 @@ class ProductController {
 
    async updateOneAttribute(req, res) {
       try {
-
          if (!req.body) {
             return missPayloadError(res);
          }
 
-         const data = req.body
-         const {id} = req.params
+         const data = req.body;
+         const { id } = req.params;
 
-         if (id === undefined)
-            return missPayloadError(res, "product attribute data error");
+         if (id === undefined) return missPayloadError(res, "product attribute data error");
 
-         const newProductSlider = await models.Product_Attribute.update(data, {where: {id}});
+         const newProductSlider = await models.Product_Attribute.update(data, { where: { id } });
 
          res.status(201).json({
             status: "successful",

@@ -31,8 +31,8 @@ router.put("/attributes/:id", CategoryAttributeController.updateAttribute);
 router.delete("/attributes/:id", CategoryAttributeController.deleteAttribute);
 
 //  *** /price-ranges
-router.post("/prices", CategoryPriceController.addOnePriceRange);
-router.put("/prices/:id", CategoryPriceController.updatePriceRange);
-router.delete("/prices/:id", CategoryPriceController.deletePriceRange);
+router.post("/price-ranges", CategoryPriceController.addOnePriceRange);
+router.put("/price-ranges/:id", CategoryPriceController.updatePriceRange);
+router.delete("/price-ranges/:id", CategoryPriceController.deletePriceRange);
 
 module.exports = router;

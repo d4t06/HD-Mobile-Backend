@@ -8,11 +8,11 @@ const SliderController = require("../controllers/SliderController");
 
 router.get("/categories", AppController.getAllCategory);
 
-router.get("/category_sliders/:category_ascii", SliderController.getCategorySlider);
+router.get("/category-sliders", SliderController.getCategorySlider);
 
-router.get("/category-attributes/:id", AppController.getCategoryAttributes);
+router.get("/category-attributes", AppController.getCategoryAttributes);
 
-router.get("/category-prices/:id", AppController.getCategoryPrices);
+router.get("/category-prices", AppController.getCategoryPrices);
 
 router.get("/brands", AppController.getAllBrand);
 

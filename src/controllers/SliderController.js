@@ -104,7 +104,7 @@ class CUDSliderController {
 
    async getCategorySlider(req, res, next) {
       try {
-         const { category_ascii } = req.params;
+         const { category_ascii } = req.query;
 
          console.log("get category slider check category_ascii", category_ascii);
 

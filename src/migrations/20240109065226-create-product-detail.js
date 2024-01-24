@@ -11,6 +11,7 @@ module.exports = {
          product_name_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
+            unique: true,
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
             references: {

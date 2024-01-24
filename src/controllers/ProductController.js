@@ -81,6 +81,7 @@ class ProductsController {
             order: [column, type],
             price,
             page_size: PAGE_SIZE,
+            page: +page,
             count,
             products: rows,
             variants_data,

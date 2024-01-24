@@ -9,7 +9,7 @@ module.exports = {
             type: Sequelize.INTEGER,
          },
          slider_id: {
-            onDelete: 'CASCADE',
+            onDelete: "CASCADE",
             type: Sequelize.INTEGER,
             references: {
                model: "Sliders",
@@ -17,7 +17,8 @@ module.exports = {
             },
          },
          product_name_ascii: {
-            onDelete: 'CASCADE',
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
             type: Sequelize.STRING,
             references: {
                model: "Products",
@@ -26,7 +27,7 @@ module.exports = {
          },
          color_id: {
             type: Sequelize.INTEGER,
-            onDelete: 'CASCADE',
+            onDelete: "CASCADE",
             references: {
                model: "Product_Colors",
                key: "id",

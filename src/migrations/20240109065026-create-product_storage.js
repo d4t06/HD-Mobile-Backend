@@ -33,7 +33,15 @@ module.exports = {
          default: {
             type: Sequelize.BOOLEAN,
          },
-      });
+      },
+      {
+         uniqueKeys: {
+            check_unique: {
+               fields: ["product_name_ascii", "storage_ascii"],
+            },
+         },
+      }
+      );
    },
    async down(queryInterface, Sequelize) {
       await queryInterface.dropTable("Product_Storages");

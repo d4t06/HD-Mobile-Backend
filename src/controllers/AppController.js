@@ -5,7 +5,7 @@ function errorRes(res, msg) {
 }
 
 class AppController {
-   async getAllCategory(req, res, next) {
+   async getAllCategory(req, res) {
       try {
          const categories = await models.Category.findAll({
             where: { hidden: 0 },
@@ -27,7 +27,7 @@ class AppController {
       }
    }
 
-   async getAllBrand(req, res, next) {
+   async getAllBrand(req, res) {
       try {
          const { category_id } = req.query;
 
@@ -42,16 +42,12 @@ class AppController {
 
    async getCategoryAttributes(req, res) {
       try {
-         const { id } = req.params;
-         if (id === undefined) return errorRes(res);
+         const { category_id } = req.query;
+         if (category_id === undefined) return errorRes(res);
 
-         const data = await models.Category_Attribute.findAll({ where: { category_id: id } });
+         const data = await models.Category_Attribute.findAll({ where: { category_id } });
 
-         res.status(200).json({
-            status: "successful",
-            message: "get all category attribute successful",
-            data,
-         });
+         res.status(200).json(data);
       } catch (error) {
          console.log(error);
          res.status(501).json({ status: "fail", message: error });
@@ -60,16 +56,15 @@ class AppController {
 
    async getCategoryPrices(req, res) {
       try {
-         const { id } = req.params;
-         if (id === undefined) return errorRes(res);
+         const { category_id } = req.query;
+         if (category_id === undefined) return errorRes(res);
 
-         const data = await models.PriceRange.findAll({ where: { category_id: id } });
-
-         res.status(200).json({
-            status: "successful",
-            message: "get all category price successful",
-            data,
+         const data = await models.PriceRange.findAll({
+            where: { category_id },
+            order: [["from", "ASC"]],
          });
+
+         res.status(200).json(data);
       } catch (error) {
          console.log(error);
          res.status(501).json({ status: "error", message: error });

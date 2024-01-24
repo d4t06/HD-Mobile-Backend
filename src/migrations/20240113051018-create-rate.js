@@ -10,6 +10,8 @@ module.exports = {
             type: Sequelize.INTEGER,
          },
          product_name_ascii: {
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
             type: Sequelize.STRING,
             references: {
                model: "Products",
