@@ -126,7 +126,7 @@ class ProductsController {
                {
                   model: models.Product_Storage,
                   as: "storages_data",
-                  where: { base_price: { [Sequelize.Op.not]: 0 } },
+                  // where: { base_price: { [Sequelize.Op.not]: 0 } },
                },
                {
                   model: models.Product_Color,

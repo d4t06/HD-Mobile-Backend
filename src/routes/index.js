@@ -1,23 +1,24 @@
 // router
+const appRouter = require("./app");
+const slider = require("./slider");
 const userRouter = require("./user");
 const productsRouter = require("./products");
 const searchRouter = require("./search");
 const authRouter = require("./auth");
+const reviewRouter = require("./review");
+const commentRouter = require("./comment");
 const refreshRouter = require("./refresh");
+const manageSlider = require("./manageSlider");
 const manageProductRouter = require("./manageProduct");
 const manageStorageRouter = require("./manageStorage");
 const manageColorRouter = require("./manageColor");
 const manageCombineRouter = require("./manageCombine");
-const manageSlider = require("./manageSlider");
-const slider = require("./slider");
-const manageAttributeRouter = require("./manageAttribute");
 const manageDetailRouter = require("./manageDetail");
 const manageCommentRouter = require("./manageComment");
-const commentRouter = require("./comment");
-const reviewRouter = require("./review");
 const manageReviewRouter = require("./manageReview");
-const appRouter = require("./app");
+const manageCategoryRouter = require("./manageCategory");
 const manageImageRouter = require("./manageImage");
+
 const tokenMiddleware = require("../middleWares/tokenMiddleware");
 const roleMiddleware = require("../middleWares/roleMiddleware");
 
@@ -41,6 +42,8 @@ const route = function (app) {
    app.use(tokenMiddleware);
    app.use(roleMiddleware.isAdmin);
 
+   app.use("/api/category-management", manageCategoryRouter);
+
    app.use("/api/slider-management", manageSlider);
 
    app.use("/api/product-management", manageProductRouter);
@@ -56,8 +59,6 @@ const route = function (app) {
    app.use("/api/color-management", manageColorRouter);
 
    app.use("/api/combine-management", manageCombineRouter);
-
-   app.use("/api/product-attribute-management", manageAttributeRouter);
 
    app.use("/api/product-detail-management", manageDetailRouter);
 
