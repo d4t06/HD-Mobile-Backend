@@ -11,19 +11,16 @@ module.exports = {
          },
          username: {
             type: Sequelize.STRING,
+            unique: true,
+            allowNull: false,
          },
          password: {
             type: Sequelize.STRING,
+            allowNull: false,
          },
-         // role_id: {
-         //    type: Sequelize.STRING,
-         //    references: {
-         //       model: "Roles",
-         //       key: "value",
-         //    },
-         // },
          role: {
             type: Sequelize.STRING,
+            defaultValue: "USER",
          },
          refresh_token: {
             type: Sequelize.STRING,
@@ -31,10 +28,12 @@ module.exports = {
          createdAt: {
             allowNull: false,
             type: Sequelize.DATE,
+            defaultValue: Sequelize.fn("NOW"),
          },
          updatedAt: {
             allowNull: false,
             type: Sequelize.DATE,
+            defaultValue: Sequelize.fn("NOW"),
          },
       });
    },
