@@ -1,5 +1,6 @@
 const { Sequelize, Op } = require("sequelize");
 const models = require("../models");
+const { convertDate } = require("../utils/appHelper");
 
 function errorRes(res, msg) {
    return res.status(402).json({ status: "error", message: msg || "missing payload" });
@@ -16,6 +17,10 @@ class OrderController {
          const rows = await models.Order.findAll({
             where: {
                username,
+            },
+            order: [["createdAt", "DESC"]],
+            attributes: {
+               include: [[Sequelize.fn("DATE_FORMAT", Sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s"), "createdAt"]],
             },
             include: {
                model: models.Order_Item,
@@ -44,10 +49,17 @@ class OrderController {
          const data = await models.Order.findOne({
             where: {
                id,
-               include: {
-                  model: models.Order_Item,
-                  as: "items",
-               },
+            },
+            include: {
+               model: models.Order_Item,
+               as: "items",
+            },
+            attributes: {
+               include: [
+                  [Sequelize.fn("DATE_FORMAT", Sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s"), "createdAt"],
+                  // [Sequelize.fn("DATE_FORMAT", Sequelize.col("deliveredAt"), "%d-%m-%Y %H:%i:%s"), 'deliveredAt']
+                  // [Sequelize.fn("DATE_FORMAT", Sequelize.col("canceledAt"), "%d-%m-%Y %H:%i:%s"), 'canceledAt']
+               ],
             },
          });
 

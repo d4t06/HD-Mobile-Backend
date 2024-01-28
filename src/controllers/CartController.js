@@ -21,6 +21,8 @@ class CartController {
                "$product_data.combines_data.color_id$": { [Op.col]: "Cart_Item.color_id" },
             },
 
+            order: [["createdAt", "DESC"]],
+
             include: [
                {
                   model: models.Product,
@@ -30,6 +32,11 @@ class CartController {
                         model: models.Product_Combine,
                         as: "combines_data",
                         attributes: ["price"],
+                     },
+                     {
+                        model: models.Category,
+                        as: "category_data",
+                        attributes: ["category_ascii"],
                      },
                      {
                         model: models.Product_Storage,
@@ -109,7 +116,17 @@ class CartController {
          )
             return errorRes(res, "Bad request");
 
-         await models.Cart_Item.create(cartItemInfo);
+         const existCartItem = await models.Cart_Item.findOne({
+            where: {
+               color_id: cartItemInfo.color_id,
+               storage_id: cartItemInfo.storage_id,
+               product_name_ascii: cartItemInfo.product_name_ascii,
+            },
+         });
+
+         if (existCartItem) {
+            await models.Cart_Item.update({ amount: existCartItem.amount + 1 }, { where: { id: existCartItem.id } });
+         } else await models.Cart_Item.create(cartItemInfo);
 
          return res.status(200).json("add cart item successful");
       } catch (error) {
@@ -131,7 +148,27 @@ class CartController {
          if (cartItemInfo.color_id === undefined || cartItemInfo.storage_id === undefined || cartItemInfo.amount === 0)
             return errorRes(res, "Cart item data error");
 
-         await models.Cart_Item.update(cartItemInfo, { where: { id: cartItemInfo.id } });
+         // case user update amount
+         if (cartItemInfo.amount) {
+            await models.Cart_Item.update(cartItemInfo, { where: { id: cartItemInfo.id } });
+
+            // case user update variant
+         } else {
+            const existCartItem = await models.Cart_Item.findOne({
+               where: {
+                  color_id: cartItemInfo.color_id,
+                  product_name_ascii: cartItemInfo.product_name_ascii,
+                  storage_id: cartItemInfo.storage_id,
+               },
+            });
+
+            if (existCartItem) {
+               await models.Cart_Item.destroy({ where: { id: cartItemInfo.id } });
+               await models.Cart_Item.update({ amount: existCartItem.amount + 1 }, { where: { id: existCartItem.id } });
+            } else {
+               await models.Cart_Item.update(cartItemInfo, { where: { id: cartItemInfo.id } });
+            }
+         }
 
          return res.status(200).json("update cart item successful");
       } catch (error) {

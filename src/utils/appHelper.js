@@ -14,13 +14,13 @@ const generateId = (name) => {
    return convertToEn(name).replaceAll(/[\W_]/g, "-");
 };
 
-const convertDate = (dateString) => {
+const convertDate = (dateString, raw) => {
    const mysqlDate = new Date(dateString);
    const currentDate = new Date();
 
    const daysDiff = (currentDate - mysqlDate) / (1000 * 60 * 60 * 24);
    // if rather than a month
-   if (daysDiff > 30) return mysqlDate.toLocaleDateString("en-gb");
+   if (daysDiff > 30 || raw) return mysqlDate.toLocaleDateString("en-gb");
 
    // if less than a month
    if (daysDiff < 1) {
