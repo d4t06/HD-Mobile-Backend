@@ -10,6 +10,7 @@ const reviewRouter = require("./review");
 const commentRouter = require("./comment");
 const refreshRouter = require("./refresh");
 const manageSlider = require("./manageSlider");
+const manageOrderRouter = require("./manageOrder");
 const manageProductRouter = require("./manageProduct");
 const manageCommentRouter = require("./manageComment");
 const manageReviewRouter = require("./manageReview");
@@ -34,14 +35,16 @@ const route = function (app) {
 
    app.use("/api/product-reviews", reviewRouter);
 
-   app.use("/api/orders", orderRouter); 
+   app.use("/api/orders", orderRouter);
+
+   app.use("/api/order-management", manageOrderRouter);
    
    app.use(tokenMiddleware);
-
+   
    app.use("/api/carts", cartRouter);
-
-
+   
    app.use(roleMiddleware.isAdmin);
+   
 
    app.use("/api/category-management", manageCategoryRouter);
 

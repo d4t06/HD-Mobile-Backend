@@ -1,6 +1,5 @@
 const { Sequelize, Op } = require("sequelize");
 const models = require("../models");
-const { convertDate } = require("../utils/appHelper");
 
 function errorRes(res, msg) {
    return res.status(402).json({ status: "error", message: msg || "missing payload" });
@@ -20,7 +19,16 @@ class OrderController {
             },
             order: [["createdAt", "DESC"]],
             attributes: {
-               include: [[Sequelize.fn("DATE_FORMAT", Sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s"), "createdAt"]],
+               include: [
+                  [
+                     Sequelize.fn(
+                        "DATE_FORMAT",
+                        Sequelize.col("createdAt"),
+                        "%d-%m-%Y %H:%i:%s"
+                     ),
+                     "createdAt",
+                  ],
+               ],
             },
             include: {
                model: models.Order_Item,
@@ -56,9 +64,30 @@ class OrderController {
             },
             attributes: {
                include: [
-                  [Sequelize.fn("DATE_FORMAT", Sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s"), "createdAt"],
-                  // [Sequelize.fn("DATE_FORMAT", Sequelize.col("deliveredAt"), "%d-%m-%Y %H:%i:%s"), 'deliveredAt']
-                  // [Sequelize.fn("DATE_FORMAT", Sequelize.col("canceledAt"), "%d-%m-%Y %H:%i:%s"), 'canceledAt']
+                  [
+                     Sequelize.fn(
+                        "DATE_FORMAT",
+                        Sequelize.col("createdAt"),
+                        "%d-%m-%Y %H:%i:%s"
+                     ),
+                     "createdAt",
+                  ],
+                  [
+                     Sequelize.fn(
+                        "DATE_FORMAT",
+                        Sequelize.col("deliveredAt") || "",
+                        "%d-%m-%Y %H:%i:%s"
+                     ),
+                     "deliveredAt",
+                  ],
+                  [
+                     Sequelize.fn(
+                        "DATE_FORMAT",
+                        Sequelize.col("canceledAt") || "",
+                        "%d-%m-%Y %H:%i:%s"
+                     ),
+                     "canceledAt",
+                  ],
                ],
             },
          });
@@ -99,13 +128,6 @@ class OrderController {
          }
          const orderItemsInfo = req.body;
 
-         // if (
-         //    orderItemInfo.color_id === undefined ||
-         //    cartItemInfo.storage_id === undefined ||
-         //    cartItemInfo.product_name_ascii === undefined
-         // )
-         //    return errorRes(res, "Bad request");
-
          await models.Order_Item.bulkCreate(orderItemsInfo);
 
          return res.status(200).json("add order items successful");
@@ -114,6 +136,67 @@ class OrderController {
          res.status(500).json({
             status: "fail",
             message: "add order items error",
+         });
+      }
+   }
+
+   async updateOrderStatus(req, res) {
+      try {
+         if (!req.body) {
+            return errorRes(res);
+         }
+         const orderInfo = req.body;
+         const status = res.locals.status;
+
+         if (orderInfo.id === undefined) return errorRes(res, "Missing id");
+
+         const founderOrderItem = await models.Order.findOne({
+            where: {
+               id: orderInfo.id,
+            },
+         });
+
+         if (!founderOrderItem) return errorRes(res, "order not found");
+
+         const dateProps = {};
+
+         switch (status) {
+            case "canceled":
+               if (
+                  founderOrderItem.status === "delivering" ||
+                  founderOrderItem.status === "completed"
+               )
+                  return errorRes(res, "Function denied");
+
+               dateProps["canceledAt"] = Sequelize.fn("NOW");
+
+               break;
+
+            case "completed":
+               if (
+                  founderOrderItem.status === "canceled" ||
+                  founderOrderItem.status === "processing"
+               )
+                  return errorRes(res, "Function denied");
+
+               dateProps["deliveredAt"] = Sequelize.fn("NOW");
+         }
+
+         await models.Order.update(
+            { status, ...dateProps },
+            {
+               where: {
+                  id: orderInfo.id,
+               },
+            }
+         );
+
+         return res.status(200).json("update order status successful");
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({
+            status: "error",
+            message: "update order status error",
          });
       }
    }

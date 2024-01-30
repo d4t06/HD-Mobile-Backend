@@ -1,6 +1,5 @@
 const { Op, Sequelize } = require("sequelize"); // operation
 const models = require("../models");
-const { convertDate } = require("../utils/appHelper");
 
 const PAGE_SIZE = +process.env.PAGE_SIZE || 6;
 
