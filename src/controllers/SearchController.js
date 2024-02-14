@@ -1,37 +1,21 @@
-const { Op, Sequelize } = require("sequelize");
+const { Op } = require("sequelize");
 const { generateId } = require("../utils/appHelper");
 const models = require("../models");
 
-const PAGE_SIZE = +process.env.PAGE_SIZE || 6;
-
 class SearchController {
    async search(req, res) {
-      const { q, page = 1, brand_id = [] } = req.query;
+      const { q } = req.query;
       if (!q.trim()) return res.status(500).json("missing query");
 
-      const { enable, type, column } = res.locals.sort;
-      let order = [];
       let where = {
          product_name_ascii: {
             [Op.like]: `${generateId(q)}%`,
          },
       };
-      if (brand_id.length) where["brand_id"] = brand_id;
-
-      if (enable) {
-         if (column === "installment") {
-            where["installment"] = 1;
-         } else {
-            order = [[{ model: models.Product_Combine, as: "combines_data" }, column, type]];
-         }
-      }
-
-      console.log("check q", q, enable);
 
       try {
-         const { rows, count } = await models.Product.findAndCountAll({
-            offset: (+page - 1) * PAGE_SIZE,
-            limit: PAGE_SIZE,
+         const rows = await models.Product.findAll({
+            limit: 20,
             include: [
                {
                   model: models.Product_Combine,
@@ -40,34 +24,16 @@ class SearchController {
                },
                {
                   model: models.Category,
-                  as: 'category_data'
-               }
+                  as: "category_data",
+               },
             ],
             attributes: {
                exclude: ["createdAt", "updatedAt"],
             },
             where,
-            order,
          });
 
-         let variants_data = [];
-         const productIds = rows.map((p) => p.product_name_ascii) || [];
-
-         if (productIds) {
-            variants_data = await models.Product_Storage.findAll({
-               where: { product_name_ascii: { [Sequelize.Op.in]: productIds } },
-            });
-         }
-
-         return res.json({
-            brand_id,
-            order: enable ? [column, type] : [],
-            page_size: PAGE_SIZE,
-            page,
-            count,
-            products: rows,
-            variants_data,
-         });
+         return res.json(rows);
       } catch (error) {
          console.log(error);
          res.status(500).json("loi server");
