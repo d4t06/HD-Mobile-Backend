@@ -11,3 +11,6 @@
 
 ### update thu 3 23/1/2024
 - Gợp chung các route cần thiết lại với nhau, tách các controller
+
+### update thu 3 20/2/2024
+- Fix route /products/details

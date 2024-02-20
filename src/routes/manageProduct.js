@@ -44,8 +44,8 @@ router.delete("/combines/:id", CombineController.delete);
 router.put("/combines/:id", CombineController.updateOne);
 
 // ** /details
-router.post("/", ProductDetailController.add);
-router.put("/:id", ProductDetailController.update);
+router.post("/details", ProductDetailController.add);
+router.put("/details/:id", ProductDetailController.update);
 
 // ** /storages
 router.post("/storages", StorageController.add);
