@@ -9,16 +9,6 @@ class AppController {
       try {
          const categories = await models.Category.findAll({
             where: { hidden: 0 },
-            // include: [
-            //    {
-            //       model: models.Category_Attribute,
-            //       as: "attributes",
-            //    },
-            //    {
-            //       model: models.PriceRange,
-            //       as: "price_ranges",
-            //    },
-            // ],
          });
          res.json(categories);
       } catch (error) {

@@ -5,7 +5,10 @@ GET http://localhost:3000/api/refresh
 GET http://localhost:3000/api/app/categories
 
 ###
-GET http://localhost:3000/api/app/brands?category_id=12
+GET http://localhost:3000/api/category-management/categories
+
+###
+GET http://localhost:3000/api/app/category_id=1
 ###
 GET http://localhost:3000/api/products/dien-thoai
 

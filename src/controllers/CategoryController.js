@@ -41,7 +41,25 @@ class CategoryController {
 
          const newCategory = await models.Category.create({ ...category });
 
-         res.json(newCategory);
+         const fullCategory = await models.Category.findOne({
+            where: { id: newCategory.id },
+            include: [
+               {
+                  model: models.Category_Attribute,
+                  as: "attributes",
+               },
+               {
+                  model: models.PriceRange,
+                  as: "price_ranges",
+               },
+               {
+                  model: models.Brand,
+                  as: "brands",
+               },
+            ],
+         });
+
+         res.json(fullCategory);
       } catch (error) {
          res.status(500).json({ message: error.message });
       }
@@ -54,6 +72,8 @@ class CategoryController {
          if (!category) {
             return res.status(402).json({ status: "error", message: "missing payload" });
          }
+
+         console.log(">>> check update category", category);
 
          await models.Category.update({ ...category }, { where: { id } });
          res.json({ message: "update category successful" });
