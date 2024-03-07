@@ -89,8 +89,8 @@ class ProductController {
 
          const productInfo = req.body;
 
-         // check info
-         if (!productInfo.brand_id || !productInfo.category_id)
+         // require: brand_id, category_id
+         if (productInfo.brand_id === undefined || productInfo.category_id === undefined)
             return res.status(402).json({ status: "finish", message: "missing payload" });
 
          const newProduct = await models.Product.create({ ...productInfo });
@@ -112,12 +112,15 @@ class ProductController {
    async updateOne(req, res) {
       try {
          const { id } = req.params;
-         if (!req.body || id === undefined) {
-            return errorRes(res);
-         }
 
          const productInfo = req.body;
-         if (!productInfo.category_id || !productInfo.brand_id) return errorRes(res);
+         // require: brand_id, category_id
+         if (
+            !productInfo ||
+            productInfo.brand_id === undefined ||
+            productInfo.category_id === undefined
+         )
+            return errorRes(res);
 
          await models.Product.update({ ...productInfo }, { where: { id: id } });
 
@@ -159,7 +162,7 @@ class ProductController {
          const data = req.body;
 
          data.forEach((item) => {
-            if (!item.category_attr_id || !item.product_name_ascii || !item.value) {
+            if (!item.category_attr_id || !item.product_ascii || !item.value) {
                return missPayloadError(res, "product attribute data error");
             }
          });

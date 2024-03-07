@@ -9,7 +9,7 @@ cloudinary.config({
 const models = require("../models");
 const { generateId } = require("../utils/appHelper");
 
-const PAGE_SIZE = +process.env.IMAGE_PAGE_SIZE || 8;
+const PAGE_SIZE = +process.env.IMAGE_PAGE_SIZE || 18;
 
 function errorRes(res) {
    return res.status(402).json({ status: "error", message: "missing payload" });
@@ -19,12 +19,13 @@ class ImageController {
    async getImages(req, res) {
       const { page = 1 } = req.query;
       try {
-         const images = await models.Image.findAll({
+         const { rows, count } = await models.Image.findAndCountAll({
             offset: (+page - 1) * PAGE_SIZE,
             limit: PAGE_SIZE,
             order: [["createdAt", "DESC"]],
          });
-         res.json(images);
+
+         res.json({ page, pageSize: PAGE_SIZE, count, images: rows });
       } catch (error) {
          console.log(error);
          res.status(500).json({ status: "error", message: "Get images error" });
@@ -43,6 +44,7 @@ class ImageController {
 
          const imageUploadRes = await cloudinary.uploader.upload(dataURI, {
             resource_type: "auto",
+            folder: "hd-mobile",
          });
 
          const imageInfo = {
@@ -54,7 +56,11 @@ class ImageController {
 
          const newImage = await models.Image.create({ ...imageInfo });
 
-         res.status(200).json({ status: "successful", message: "add image successful", data: newImage });
+         res.status(200).json({
+            status: "successful",
+            message: "add image successful",
+            data: newImage,
+         });
       } catch (error) {
          console.log(error);
          res.status(500).json({ status: "failed", message: "upload image failed" });
@@ -68,8 +74,9 @@ class ImageController {
             return errorRes(res);
          }
 
-         await cloudinary.uploader.destroy(id);
-         await models.Image.destroy({ where: { public_id: id } });
+         const public_id = decodeURIComponent(id);
+         await cloudinary.uploader.destroy(public_id);
+         await models.Image.destroy({ where: { public_id } });
 
          res.status(201).json({
             status: "successful",

@@ -11,7 +11,7 @@ module.exports = {
                primaryKey: true,
                type: Sequelize.INTEGER,
             },
-            product_name_ascii: {
+            product_ascii: {
                type: Sequelize.STRING,
             },
             username: {
@@ -55,7 +55,7 @@ module.exports = {
          {
             uniqueKeys: {
                Cart_Item_unique: {
-                  fields: ["color_id", "storage_id", "product_name_ascii", "username"],
+                  fields: ["color_id", "storage_id", "product_ascii", "username"],
                },
             },
          }

@@ -50,11 +50,12 @@ class CategoryController {
    async updateCategory(req, res) {
       try {
          const category = req.body;
-         if (!category || !category.id) {
+         const { id } = req.params;
+         if (!category) {
             return res.status(402).json({ status: "error", message: "missing payload" });
          }
 
-         await models.Category.update({ ...category }, { where: { id: category.id } });
+         await models.Category.update({ ...category }, { where: { id } });
          res.json({ message: "update category successful" });
       } catch (error) {
          res.status(500).json({ message: error.message });

@@ -39,11 +39,11 @@ const route = function (app) {
 
    app.use("/api/order-management", manageOrderRouter);
    
-   app.use(tokenMiddleware);
+   // app.use(tokenMiddleware);
    
    app.use("/api/carts", cartRouter);
    
-   app.use(roleMiddleware.isAdmin);
+   // app.use(roleMiddleware.isAdmin);
    
 
    app.use("/api/category-management", manageCategoryRouter);

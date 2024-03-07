@@ -112,7 +112,7 @@ class CartController {
          if (
             cartItemInfo.color_id === undefined ||
             cartItemInfo.storage_id === undefined ||
-            cartItemInfo.product_name_ascii === undefined
+            cartItemInfo.product_ascii === undefined
          )
             return errorRes(res, "Bad request");
 
@@ -120,7 +120,7 @@ class CartController {
             where: {
                color_id: cartItemInfo.color_id,
                storage_id: cartItemInfo.storage_id,
-               product_name_ascii: cartItemInfo.product_name_ascii,
+               product_ascii: cartItemInfo.product_ascii,
             },
          });
 
@@ -157,7 +157,7 @@ class CartController {
             const existCartItem = await models.Cart_Item.findOne({
                where: {
                   color_id: cartItemInfo.color_id,
-                  product_name_ascii: cartItemInfo.product_name_ascii,
+                  product_ascii: cartItemInfo.product_ascii,
                   storage_id: cartItemInfo.storage_id,
                },
             });

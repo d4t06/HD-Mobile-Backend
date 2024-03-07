@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
       {
          category_ascii: DataTypes.STRING,
          category_name: DataTypes.STRING,
-         icon: DataTypes.STRING,
          hidden: DataTypes.INTEGER,
+         attribute_order: DataTypes.STRING,
       },
       {
          sequelize,

@@ -10,14 +10,14 @@ module.exports = {
                primaryKey: true,
                type: Sequelize.INTEGER,
             },
-            product_name_ascii: {
+            product_ascii: {
                onDelete: "CASCADE",
                onUpdate: "CASCADE",
                type: Sequelize.STRING,
                allowNull: false,
                references: {
                   model: "Products",
-                  key: "product_name_ascii",
+                  key: "product_ascii",
                },
             },
             color_id: {
@@ -55,7 +55,7 @@ module.exports = {
          {
             uniqueKeys: {
                check_unique: {
-                  fields: ["product_name_ascii", "storage_id", "color_id"],
+                  fields: ["product_ascii", "storage_id", "color_id"],
                },
             },
          }

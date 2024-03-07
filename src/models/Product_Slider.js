@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
    Product_Slider.init(
       {
          slider_id: DataTypes.INTEGER,
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          color_id:  DataTypes.INTEGER,
       },
       {

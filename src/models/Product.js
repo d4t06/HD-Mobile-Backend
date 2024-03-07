@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
          // define association here
          // default use 'DetailId' filed
          Product.hasOne(models.Product_Detail, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "detail",
          });
 
@@ -25,39 +25,39 @@ module.exports = (sequelize, DataTypes) => {
          });
 
          Product.hasMany(models.Product_Storage, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "storages_data",
          });
 
 
          Product.hasMany(models.Product_Color, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "colors_data",
          });
 
          Product.hasMany(models.Product_Combine, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "combines_data",
          });
 
          Product.hasMany(models.Product_Slider, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "sliders_data",
          });
 
          Product.hasMany(models.Product_Attribute, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "attributes_data",
          });
 
          Product.hasMany(models.Question, {
-            sourceKey: "product_name_ascii",
-            foreignKey: "product_name_ascii",
+            sourceKey: "product_ascii",
+            foreignKey: "product_ascii",
             as: "comments_data",
          });
       }
@@ -65,8 +65,9 @@ module.exports = (sequelize, DataTypes) => {
 
    Product.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          brand_id: DataTypes.STRING,
+         imei: DataTypes.STRING,
          category_id: DataTypes.STRING,
          product_name: DataTypes.STRING,
          image_url: DataTypes.STRING,

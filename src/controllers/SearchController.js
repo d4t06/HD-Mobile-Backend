@@ -8,7 +8,7 @@ class SearchController {
       if (!q.trim()) return res.status(500).json("missing query");
 
       let where = {
-         product_name_ascii: {
+         product_ascii: {
             [Op.like]: `${generateId(q)}%`,
          },
       };

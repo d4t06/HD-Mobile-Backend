@@ -8,7 +8,7 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER,
          },
-         product_name_ascii: {
+         product_ascii: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true,
@@ -16,7 +16,7 @@ module.exports = {
             onUpdate: "CASCADE",
             references: {
                model: "Products",
-               key: "product_name_ascii",
+               key: "product_ascii",
             },
          },
          content: {

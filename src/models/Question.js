@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Question.init(
     {
-      product_name_ascii: DataTypes.STRING,
+      product_ascii: DataTypes.STRING,
       phone_number: DataTypes.STRING,
       cus_name: DataTypes.STRING,
       content: DataTypes.STRING,

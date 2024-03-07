@@ -35,7 +35,7 @@ class ProductReviewController {
          }
 
          return res.json({
-            product_name_ascii: "",
+            product_ascii: "",
             page: +page,
             reviews: rows,
             count,
@@ -59,7 +59,7 @@ class ProductReviewController {
             offset: (+page - 1) * PAGE_SIZE,
             limit: PAGE_SIZE,
             where: {
-               product_name_ascii: id,
+               product_ascii: id,
             },
             include: {
                model: models.Answer,
@@ -78,7 +78,7 @@ class ProductReviewController {
          }
 
          return res.json({
-            product_name_ascii: id,
+            product_ascii: id,
             page: +page,
             reviews: rows,
             count,
@@ -174,7 +174,7 @@ class ProductReviewController {
             //       q_id: { [Op.not]: null },
             //    },
             // },
-            where: { product_name_ascii: id, approve: 1 },
+            where: { product_ascii: id, approve: 1 },
          });
 
          if (rows.length) {
@@ -188,7 +188,7 @@ class ProductReviewController {
          }
 
          return res.json({
-            product_name_ascii: id,
+            product_ascii: id,
             page: +page,
             reviews: rows,
             count,
@@ -206,7 +206,7 @@ class ProductReviewController {
 
          const average = await models.Rate.findOne({
             attributes: [[Sequelize.fn("AVG", models.sequelize.col("rate")), "average"]],
-            where: { product_name_ascii: id, approve: 1 },
+            where: { product_ascii: id, approve: 1 },
          });
 
          return res.json(average);

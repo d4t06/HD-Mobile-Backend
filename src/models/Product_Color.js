@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
    }
    Product_Color.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          color_ascii: DataTypes.STRING,
          color: DataTypes.STRING,
          // slider_id: DataTypes.INTEGER,

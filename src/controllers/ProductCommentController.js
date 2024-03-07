@@ -34,7 +34,7 @@ class ProductCommentController {
          }
 
          return res.json({
-            product_name_ascii: "",
+            product_ascii: "",
             page: +page,
             comments: rows,
             count,
@@ -58,7 +58,7 @@ class ProductCommentController {
             offset: (+page - 1) * PAGE_SIZE,
             limit: PAGE_SIZE,
             where: {
-               product_name_ascii: id,
+               product_ascii: id,
             },
             include: {
                model: models.Answer,
@@ -77,7 +77,7 @@ class ProductCommentController {
          }
 
          return res.json({
-            product_name_ascii: id,
+            product_ascii: id,
             page: +page,
             comments,
          });
@@ -103,7 +103,7 @@ class ProductCommentController {
                   q_id: { [Op.not]: null },
                },
             },
-            where: { product_name_ascii: id },
+            where: { product_ascii: id },
          });
 
          if (rows.length) {
@@ -117,7 +117,7 @@ class ProductCommentController {
          }
 
          return res.json({
-            product_name_ascii: id,
+            product_ascii: id,
             page: +page,
             comments: rows,
             page_size: PAGE_SIZE,

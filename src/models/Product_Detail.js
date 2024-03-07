@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
    Product_Detail.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          content: DataTypes.TEXT,
       },
       {

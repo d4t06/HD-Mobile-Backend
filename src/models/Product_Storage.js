@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
    }
    Product_Storage.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          storage_ascii: DataTypes.STRING,
          storage: DataTypes.STRING,
          base_price: DataTypes.INTEGER,

@@ -66,11 +66,14 @@ class ProductsController {
          });
 
          let variants_data = [];
-         const productIds = rows.map((p) => p.product_name_ascii) || [];
+         const productIds = rows.map((p) => p.product_ascii) || [];
 
          if (productIds) {
             variants_data = await models.Product_Storage.findAll({
-               where: { product_name_ascii: { [Sequelize.Op.in]: productIds }, base_price: { [Sequelize.Op.not]: 0 } },
+               where: {
+                  product_ascii: { [Sequelize.Op.in]: productIds },
+                  base_price: { [Sequelize.Op.not]: 0 },
+               },
             });
          }
 
@@ -101,7 +104,7 @@ class ProductsController {
       try {
          const product = await models.Product.findOne({
             where: {
-               product_name_ascii: id,
+               product_ascii: id,
             },
             attributes: {
                exclude: ["createdAt", "updatedAt"],
@@ -110,7 +113,6 @@ class ProductsController {
                {
                   model: models.Category,
                   as: "category_data",
-                  attributes: ["id"],
                   include: {
                      model: models.Category_Attribute,
                      as: "attributes",
@@ -170,10 +172,10 @@ class ProductsController {
                {
                   model: models.Product_Attribute,
                   as: "attributes_data",
-                  include: {
-                     model: models.Category_Attribute,
-                     as: "attribute_data",
-                  },
+                  // include: {
+                  //    model: models.Category_Attribute,
+                  //    as: "attribute_data",
+                  // },
                },
             ],
          });
@@ -182,17 +184,6 @@ class ProductsController {
       } catch (err) {
          console.log(err);
          res.status(500).json({ message: err });
-      }
-   }
-
-   async buy(req, res, next) {
-      const { body } = req.body;
-      console.log(body);
-      try {
-         await models.Order.create(body);
-         res.json("insert successful");
-      } catch {
-         res.status(500).json("loi server");
       }
    }
 }

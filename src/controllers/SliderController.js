@@ -35,7 +35,7 @@ class CUDSliderController {
          const data = req.body;
 
          data.forEach((item) => {
-            if (!item.color_id || !item.slider_id || !item.product_name_ascii) {
+            if (!item.color_id || !item.slider_id || !item.product_ascii) {
                return missPayloadError(res, "product slider data error");
             }
          });

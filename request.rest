@@ -13,7 +13,7 @@ GET http://localhost:3000/api/products/dien-thoai
 GET http://localhost:3000/api/products/dien_thoai?page=1&column=price&type=desc
 
 ###
-GET http://localhost:3000/api/product-management/products/iphone-14-pro-max
+GET http://localhost:3000/api/product-management/products/iphone
 
 ###
 GET http://localhost:3000/api/product-management/products

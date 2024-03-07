@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Answer.init({
     q_id: DataTypes.INTEGER,
-    product_name_ascii: DataTypes.STRING,
+    product_ascii: DataTypes.STRING,
     content: DataTypes.STRING,
     total_like: DataTypes.INTEGER,
     date_convert: DataTypes.STRING

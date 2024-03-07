@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   Product_Attribute.init(
     {
       category_attr_id: DataTypes.INTEGER,
-      product_name_ascii: DataTypes.STRING,
+      product_ascii: DataTypes.STRING,
       value: DataTypes.STRING,
     },
     {

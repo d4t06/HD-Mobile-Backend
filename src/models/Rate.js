@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Rate.hasOne(models.Product, {
-        sourceKey: "product_name_ascii",
-        foreignKey: "product_name_ascii",
+        sourceKey: "product_ascii",
+        foreignKey: "product_ascii",
         as: "product_data",
      });
     }
   }
   Rate.init({
-    product_name_ascii: DataTypes.STRING,
+    product_ascii: DataTypes.STRING,
     cus_name: DataTypes.STRING,
     content: DataTypes.STRING,
     rate: DataTypes.NUMBER,

@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       static associate(models) {
          // define association here
          Cart_Item.hasOne(models.Product, {
-            foreignKey: "product_name_ascii",
-            sourceKey: "product_name_ascii",
+            foreignKey: "product_ascii",
+            sourceKey: "product_ascii",
             as: "product_data",
          });
       }
    }
    Cart_Item.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          username: DataTypes.STRING,
          amount: DataTypes.INTEGER,
          color_id: DataTypes.INTEGER,

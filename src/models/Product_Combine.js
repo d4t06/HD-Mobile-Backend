@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
    }
    Product_Combine.init(
       {
-         product_name_ascii: DataTypes.STRING,
+         product_ascii: DataTypes.STRING,
          color_id: DataTypes.STRING,
          storage_id: DataTypes.STRING,
          price: DataTypes.INTEGER,
